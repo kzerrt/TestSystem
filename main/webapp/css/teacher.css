@@ -50,3 +50,7 @@ body > .el-container {
 .picture{
     background: url("../imgs/13.png") no-repeat 0px 0px;
 }
+a:link{
+    text-decoration: none;
+    color: black;
+}

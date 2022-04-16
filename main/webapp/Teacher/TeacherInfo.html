@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TeacherInfo</title>
+</head>
+<body>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+
+<div id="app" align="center" style="margin-top: 10%">
+
+    <el-table :data="teachData" style="width: 1450px" border>
+        <el-table-column prop="code" label="教师工号" width="100" height="10px">
+        </el-table-column>
+        <el-table-column prop="tname" label="教师姓名" width="150" height="10px">
+        </el-table-column>
+        <el-table-column prop="age" label="教师年龄" width="150" height="10px">
+        </el-table-column>
+        <el-table-column prop="sex" label="教师性别" width="150" height="10px">
+        </el-table-column>
+        <el-table-column prop="phone" label="电话" width="200" height="10px">
+        </el-table-column>
+        <el-table-column prop="address" label="地址" height="10px">
+        </el-table-column>
+    </el-table>
+    <div style="margin-top: 40px">
+    <el-button type="primary" style="margin-right: 40px" v-on:click="dialogFormVisible = true">修改信息</el-button>
+    <el-button type="primary" v-on:click="dialogPasswordVisible = true">修改密码</el-button>
+    </div>
+
+
+        <!--修改教师信息-->
+    <el-dialog title="修改信息" :visible.sync="dialogFormVisible">
+        <el-form>
+            <el-form-item label="教师姓名" :label-width="formLabelWidth">
+                <el-input v-model="teacher.tname" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="电话" :label-width="formLabelWidth">
+                <el-input v-model="teacher.phone" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="地址" :label-width="formLabelWidth">
+                <el-input v-model="teacher.address" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+    </el-dialog>
+
+
+    <!--用户修改密码-->
+    <el-dialog title="修改信息" :visible.sync="dialogPasswordVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="密码" prop="pass">
+                <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass">
+                <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
+</div>
+
+<script>
+    new Vue({
+        el:"#app",
+        data(){
+
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+            const teacher = {
+                code:'gzd',
+                tname: "xh4523",
+                age: "dfxhx",
+                sex: "ghj4563",
+                phone: "452ko;",
+                address: "12152"
+            };
+
+            const count = {
+                username : '',
+                password : ''
+
+            }
+
+            return{
+                teachData:Array(1).fill(teacher),
+                teacher:teacher,
+                dialogFormVisible : false,
+                formLabelWidth: '120px',
+                dialogPasswordVisible: false,
+
+                ruleForm: {
+                    pass: '',
+                    checkPass: ''
+                },
+                rules: {
+                    pass: [
+                        { validator: validatePass, trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        { validator: validatePass2, trigger: 'blur' }
+                    ]
+                }
+            };
+
+
+        },
+        methods: {
+            /**
+             * 当用户将密码填写正确后进行判断
+             * */
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        /*alert('submit!');*/
+                        axios({
+                            method:"post",
+                            url:"/web/updateServlet",
+                            data: this.ruleForm.pass
+
+                        }).then( resp =>{
+                            alert(resp.data);
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            /**
+             * 用户重置修改密码框中的信息
+             * */
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        }
+
+    });
+</script>
+</body>
+</html>

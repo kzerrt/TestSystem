@@ -1,7 +1,9 @@
 package mapper;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import pojo.Count;
 import pojo.Teacher;
 
@@ -37,5 +39,10 @@ public interface UserMapper {
 
     Teacher selectByTeaId(int id);
 
+    /**
+     * 修改账号密码
+     * */
+    @Update("update teach_user set password = #{password} where username = #{username}")
+    boolean updatePassword(@Param("password") String password, @Param("username") String username);
 
 }

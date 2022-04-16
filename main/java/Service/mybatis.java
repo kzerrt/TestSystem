@@ -12,7 +12,11 @@ public interface mybatis {
     Count selectByStuUserId(String name);
     //查找教师账号
     Count selectByTeaUserId(String name);
+    //添加学生账号
     boolean add(Count user);
+
+    //修改账号密码
+    boolean updatePassword(String password,String username);
     void close();
 
     void commit();

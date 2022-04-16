@@ -42,7 +42,7 @@
             &lt;!&ndash;input type="reset" class="button" value="reset">&ndash;&gt;
         </div>-->
         <div id="subDiv">
-        <el-button type="primary" round @click="submit()"> &nbsp&nbsp&nbsp登录&nbsp&nbsp&nbsp</el-button>
+            <el-button type="primary" round @click="submit()"> &nbsp&nbsp&nbsp登录&nbsp&nbsp&nbsp</el-button>
         </div>
         <div class="textright">
             <a href="#" class="al">没有账号？点击注册</a>
@@ -92,11 +92,18 @@
 
             ///账号密码错误弹窗
             error(msg) {
-                this.$notify.error({
+                /*this.$notify.error({
                     title: '错误',
                     message: msg,
                     type:"error"
+                });*/
+
+                this.$message({
+                    showClose: true,
+                    message: msg,
+                    type: 'error'
                 });
+
             },
 
             submit() {
@@ -112,7 +119,7 @@
                     username: "",
                     password: "",
                     remember: "",
-                    radio:""
+                    radio: ""
                 };
                 count.username = username;
                 count.password = password;
@@ -123,24 +130,23 @@
                     method: "post",
                     url: "/web/loginServlet",
                     data: {
-                        username:username,
-                        password:password,
-                        radio:radio,
-                        remember:remember
+                        username: username,
+                        password: password,
+                        radio: radio,
+                        remember: remember
                     }
                 }).then((resp) => {
                     let msg = resp.data;
-                    alert(msg);
+                    /*alert(msg);*/
                     if (msg == "successStu") {
                         location.href = "http://localhost:8080/web/main.jsp";
-                    } else if(msg == "successTea"){
+                    } else if (msg == "successTea") {
                         location.href = "http://localhost:8080/web/Teacher.html";
-                    }else {
+                    } else {
                         this.error(msg);
                     }
                 })
             }
-
 
 
         }

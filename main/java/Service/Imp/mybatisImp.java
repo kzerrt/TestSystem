@@ -39,6 +39,13 @@ public class mybatisImp implements mybatis {
        return mapper.add(user);
     }
 
+    @Override
+    public boolean updatePassword(String password , String username) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        boolean b = mapper.updatePassword(password,username);
+        return b;
+    }
+
     public List<Count> select(){
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         List<Count> select = mapper.select();

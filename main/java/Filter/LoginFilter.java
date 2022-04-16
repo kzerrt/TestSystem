@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/*")
+/*@WebFilter("/*")*/
 public class LoginFilter implements Filter {
 
     @Override
@@ -28,7 +28,7 @@ public class LoginFilter implements Filter {
         //拦截器会将页面有关的所有文件拦截
         String[] urls =
                 {"/register.jsp","/login.html","/element-ui","/css","/js","/imgs","/loginServlet",
-                        "/registcheckServlet","registerServlet","checkCodeServlet","getUserServlet"};
+                        "/registcheckServlet","registerServlet","checkCodeServlet","getUserServlet","/Teacher"};
         String url = req.getRequestURL().toString();
         for(String u:urls){
             if(url.contains(u)){
