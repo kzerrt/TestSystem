@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link href="css/login.css" rel="stylesheet">
+    <link rel="shortcut icon" href="#"/>
+</head>
+
+<body>
+<div id="loginDiv" style="height: 400px">
+
+    <form method="post" id="form">
+        <h1 id="loginMsg">登 录</h1>
+        <!--显示登录失败或注册成功的消-->
+        <!--<p id="errorMsg" v-model="errMsg"></p>-->
+        <p>账号 :<input id="username" v-model="c_username" type="text"></p>
+
+        <p>密码 :<input id="password" v-model="c_password" type="password"></p>
+
+        <template>
+            <div style="margin: 30px 0px 10px 40px">
+                <el-radio v-model="radio" label="stu" border>学生</el-radio>
+                <el-radio v-model="radio" label="tea" border>教师</el-radio>
+            </div>
+        </template>
+
+        <br>
+        <div style="margin-left: 40px">
+            记住我：
+            <el-switch
+                    v-model="remember"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+
+            </el-switch>
+        </div>
+        <!--<p>Remember:<input id="remember" value="1" type="checkbox"></p>-->
+
+        <!--<div id="subDiv">
+            <input id="submitbtn" type="button" class="button" value="登录" @click="submit()">
+            &lt;!&ndash;input type="reset" class="button" value="reset">&ndash;&gt;
+        </div>-->
+        <div id="subDiv">
+        <el-button type="primary" round @click="submit()"> &nbsp&nbsp&nbsp登录&nbsp&nbsp&nbsp</el-button>
+        </div>
+        <div class="textright">
+            <a href="#" class="al">没有账号？点击注册</a>
+        </div>
+    </form>
+
+
+</div>
+
+<!--导入axios文件-->
+<script src="js/axios-0.18.0.js"></script>
+<!--导入vue文件-->
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script>
+
+
+    new Vue({
+        el: "#loginDiv",
+        data() {
+
+            return {
+                errMsg: "12",
+                c_username: "",
+                c_password: "",
+                remember: false,
+                radio: "stu"
+            }
+        },
+        mounted() {
+
+            axios({
+                method: "get",
+                url: "/web/getUserServlet",
+            }).then((resp) => {
+                let count = resp.data;
+                this.c_username = count.username;
+                this.c_password = count.password;
+                this.remember = count.remember;
+                this.radio = count.radio;
+            })
+
+        },
+        methods: {
+
+            ///账号密码错误弹窗
+            error(msg) {
+                this.$notify.error({
+                    title: '错误',
+                    message: msg,
+                    type:"error"
+                });
+            },
+
+            submit() {
+                //获取用户填入的数据
+
+                let username = this.c_username;
+                let password = this.c_password;
+                let remember = this.remember;
+                let radio = this.radio;
+
+                //将用户信息设置为json
+                let count = {
+                    username: "",
+                    password: "",
+                    remember: "",
+                    radio:""
+                };
+                count.username = username;
+                count.password = password;
+                count.remember = remember;
+                count.radio = radio;
+
+                axios({
+                    method: "post",
+                    url: "/web/loginServlet",
+                    data: {
+                        username:username,
+                        password:password,
+                        radio:radio,
+                        remember:remember
+                    }
+                }).then((resp) => {
+                    let msg = resp.data;
+                    alert(msg);
+                    if (msg == "successStu") {
+                        location.href = "http://localhost:8080/web/main.jsp";
+                    } else if(msg == "successTea"){
+                        location.href = "http://localhost:8080/web/Teacher.html";
+                    }else {
+                        this.error(msg);
+                    }
+                })
+            }
+
+
+
+        }
+    })
+</script>
+</body>
+</html>
