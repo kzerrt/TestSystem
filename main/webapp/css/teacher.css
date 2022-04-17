@@ -1,11 +1,5 @@
 /**************start********************/
 /**************header头框架********************/
-.el-footer {
-    background-color: #67C23A;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-}
 
 .el-aside {
     background-color: #D3DCE6;
@@ -18,11 +12,11 @@
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
+    /*line-height: 160px;*/
 }
 
 body > .el-container {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 .el-container:nth-child(5) .el-aside,
@@ -38,10 +32,11 @@ body > .el-container {
 
 .el-header {
 
-    background-color: #67C23A;
-    color: #333;
-    line-height: 60px;
+    /*background-color: #67C23A;*/
+    /*color: #333;
+    line-height: 80px;*/
     text-align: center;
+    background: url("../imgs/13.png") no-repeat 0px 0px;
 }
 
 .el-aside {

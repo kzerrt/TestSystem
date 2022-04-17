@@ -78,4 +78,18 @@ public class Teacher {
     public void setTeacherCountId(int teacherCountId) {
         this.teacherCountId = teacherCountId;
     }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", code=" + code +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", age=" + age +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", teacherCountId=" + teacherCountId +
+                '}';
+    }
 }

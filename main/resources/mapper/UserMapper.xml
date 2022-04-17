@@ -4,9 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.UserMapper">
 
+    <resultMap id="Teacher" type="pojo.Teacher">
+        <result column="tea_id" property="teacherCountId"></result>
+        <!--<result column="birthday" property="age"/>-->
+        <result column="t_code" property="code"></result>
+    </resultMap>
+
+    <update id="updateTeachInfo">
+        update teacher
+        set name = #{name} and phone = #{phone} and address = #{address}
+        where t_code = #{code};
+    </update>
 
     <select id="selectByTeaId" resultType="pojo.Teacher">
         select * from teacher  a where tea_id = (select id from teach_user b where b.id = #{id});
     </select>
+
 
 </mapper>

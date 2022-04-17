@@ -28,12 +28,12 @@
         </el-table-column>
     </el-table>
     <div style="margin-top: 40px">
-    <el-button type="primary" style="margin-right: 40px" v-on:click="dialogFormVisible = true">修改信息</el-button>
-    <el-button type="primary" v-on:click="dialogPasswordVisible = true">修改密码</el-button>
+        <el-button type="primary" style="margin-right: 40px" v-on:click="dialogFormVisible = true">修改信息</el-button>
+        <el-button type="primary" v-on:click="dialogPasswordVisible = true">修改密码</el-button>
     </div>
 
 
-        <!--修改教师信息-->
+    <!--修改教师信息-->
     <el-dialog title="修改信息" :visible.sync="dialogFormVisible">
         <el-form>
             <el-form-item label="教师姓名" :label-width="formLabelWidth">
@@ -46,10 +46,10 @@
                 <el-input v-model="teacher.address" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-        </div>
+
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false" onclick="updateInfo()">确 定</el-button>
+
     </el-dialog>
 
 
@@ -72,9 +72,39 @@
 </div>
 
 <script>
+    var teacher = {
+        id: '',
+        code: '',
+        tname: "",
+        age: "",
+        sex: "",
+        phone: "",
+        address: ""
+    };
+
     new Vue({
-        el:"#app",
-        data(){
+        el: "#app",
+        mounted() {
+            axios({
+                url: '/web/showInfoServlet',
+                method: "get",
+            }).then(resp => {
+                const teacher = resp.data;
+                if (teacher == 'fail') {
+
+                } else {
+                    this.teacher.code = teacher.id;
+                    this.teacher.tname = teacher.name;
+                    this.teacher.sex = teacher.sex;
+                    this.teacher.age = teacher.age;
+                    this.teacher.phone = teacher.phone;
+                    this.teacher.address = teacher.address;
+                }
+            })
+
+        },
+
+        data() {
 
             var validatePass = (rule, value, callback) => {
                 if (value === '') {
@@ -95,25 +125,13 @@
                     callback();
                 }
             };
-            const teacher = {
-                code:'gzd',
-                tname: "xh4523",
-                age: "dfxhx",
-                sex: "ghj4563",
-                phone: "452ko;",
-                address: "12152"
-            };
 
-            const count = {
-                username : '',
-                password : ''
 
-            }
 
-            return{
-                teachData:Array(1).fill(teacher),
-                teacher:teacher,
-                dialogFormVisible : false,
+            return {
+                teachData: Array(1).fill(teacher),
+                teacher: teacher,
+                dialogFormVisible: false,
                 formLabelWidth: '120px',
                 dialogPasswordVisible: false,
 
@@ -123,13 +141,13 @@
                 },
                 rules: {
                     pass: [
-                        { validator: validatePass, trigger: 'blur' }
+                        {validator: validatePass, trigger: 'blur'}
                     ],
                     checkPass: [
-                        { validator: validatePass2, trigger: 'blur' }
+                        {validator: validatePass2, trigger: 'blur'}
                     ]
                 }
-            };
+            }
 
 
         },
@@ -142,15 +160,21 @@
                     if (valid) {
                         /*alert('submit!');*/
                         axios({
-                            method:"post",
-                            url:"/web/updateServlet",
+                            method: "post",
+                            url: "/web/updateServlet",
                             data: this.ruleForm.pass
 
-                        }).then( resp =>{
-                            alert(resp.data);
+                        }).then(resp => {
+                            /*alert(resp.data);*/
+                            if (resp.data != "success") {
+                                this.error(resp.data);
+                            } else {
+                                location.href = "http://localhost:8080/web/login.html";
+                            }
                         })
                     } else {
-                        console.log('error submit!!');
+                        /*console.log('error submit!!');*/
+                        this.error('error submit!!');
                         return false;
                     }
                 });
@@ -161,9 +185,48 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             }
-        }
+        },
 
+        chengShow(msg) {
+            this.$message({
+                showClose: true,
+                message: msg,
+                type: 'success'
+            });
+        },
+        error(msg) {
+            this.$message({
+                showClose: true,
+                message: msg,
+                type: 'error'
+            });
+        }
     });
+
+    //更新教师信息
+    function updateInfo() {
+        /*this.dialogFormVisible = false;*/
+        axios({
+            url: '/web/updateInfoServlet',
+            method: 'post',
+            data: {
+                code: this.teacher.code,
+                name: this.teacher.tname,
+                phone: this.teacher.phone,
+                address: this.teacher.address
+            }
+        }).then(resp => {
+            if (resp.data == 'success') {
+                this.chengShow("修改成功!!");
+            } else {
+                this.error("修改失败!");
+            }
+        })
+    }
+</script>
+<script>
+
+
 </script>
 </body>
 </html>

@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 @WebServlet("/updateServlet")
-public class UpdateServlet extends HttpServlet {
+public class UpdatePasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.doPost(request,response);
@@ -36,6 +36,7 @@ public class UpdateServlet extends HttpServlet {
             msg = "账户问题，请重试";
             response.getWriter().write(msg);
             response.getWriter().close();
+            mybatisImp.close();
             return ;
         }
         //获取用户修改的密码
@@ -52,16 +53,16 @@ public class UpdateServlet extends HttpServlet {
         //返回修改结果
         if(flag){
             msg = "success";
-        }else
+            //将现存账户从Session中删除
+            session.removeAttribute("user");
+            mybatisImp.commit();
+        }else {
             msg = "fail";
 
-        //将现存账户从Session中删除
-        session.removeAttribute("user");
-        //重定向到登录界面
-        response.sendRedirect("http://localhost:8080/web/login.html");
+        }
         response.getWriter().write(msg);
         response.getWriter().close();
-        mybatisImp.commit();
         mybatisImp.close();
+
     }
 }

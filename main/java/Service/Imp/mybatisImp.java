@@ -4,8 +4,8 @@ import Service.mybatis;
 import mapper.UserMapper;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Count;
+import pojo.Teacher;
 
-import java.util.List;
 
 /**
  * @auther:Florence
@@ -25,6 +25,16 @@ public class mybatisImp implements mybatis {
         Count user = mapper.selectByUsername(name);
         return user;
     }
+    @Override
+    public boolean add(Count user) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.add(user);
+    }
+
+    /**
+     *
+     * *************教师*************
+     * */
 
     @Override
     public Count selectByTeaUserId(String name) {
@@ -34,23 +44,36 @@ public class mybatisImp implements mybatis {
     }
 
     @Override
-    public boolean add(Count user) {
-        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-       return mapper.add(user);
-    }
-
-    @Override
     public boolean updatePassword(String password , String username) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         boolean b = mapper.updatePassword(password,username);
         return b;
     }
+    //通过账号id查找教师信息
+    @Override
+    public Teacher selectTeachInfoByCountId(int id){
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
 
-    public List<Count> select(){
+        return mapper.selectTeachInfoByCountId(id);
+    }
+
+    //修改教师信息
+    public boolean updateTeachInfo(Teacher teacher){
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        return mapper.updateTeachInfo(teacher);
+    }
+    public boolean updateTeachInfo(int code,String name,String phone,String address){
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+        return mapper.updateTeachInfo(code,name,phone,address);
+    }
+
+    /*public List<Count> select(){
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         List<Count> select = mapper.select();
         return select;
-    }
+    }*/
     @Override
     public void close()
     {
