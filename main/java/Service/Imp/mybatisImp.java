@@ -4,7 +4,10 @@ import Service.mybatis;
 import mapper.UserMapper;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Count;
+import pojo.StuInfo_Tea;
 import pojo.Teacher;
+
+import java.util.List;
 
 
 /**
@@ -69,11 +72,17 @@ public class mybatisImp implements mybatis {
         return mapper.updateTeachInfo(code,name,phone,address);
     }
 
-    /*public List<Count> select(){
+    @Override
+    public List<StuInfo_Tea> selectStuInfo(int teaId) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        List<Count> select = mapper.select();
-        return select;
-    }*/
+        return mapper.selectStuInfo(teaId);
+    }
+
+    /*public List<Count> select(){
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            List<Count> select = mapper.select();
+            return select;
+        }*/
     @Override
     public void close()
     {

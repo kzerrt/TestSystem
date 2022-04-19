@@ -2,6 +2,7 @@ package mapper;
 
 import org.apache.ibatis.annotations.*;
 import pojo.Count;
+import pojo.StuInfo_Tea;
 import pojo.Teacher;
 
 import java.util.List;
@@ -61,5 +62,6 @@ public interface UserMapper {
     boolean updateTeachInfo(Teacher teacher);
     boolean updateTeachInfo(@Param("code") int code,@Param("name") String name,@Param("phone") String phone,@Param("address") String address);
 
+    List<StuInfo_Tea> selectStuInfo(int teaId);
 
 }

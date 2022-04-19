@@ -35,12 +35,7 @@
 
             </el-switch>
         </div>
-        <!--<p>Remember:<input id="remember" value="1" type="checkbox"></p>-->
 
-        <!--<div id="subDiv">
-            <input id="submitbtn" type="button" class="button" value="登录" @click="submit()">
-            &lt;!&ndash;input type="reset" class="button" value="reset">&ndash;&gt;
-        </div>-->
         <div id="subDiv">
             <el-button type="primary" round @click="submit()"> &nbsp&nbsp&nbsp登录&nbsp&nbsp&nbsp</el-button>
         </div>
@@ -61,17 +56,16 @@
 
 <script>
 
-
+    var type = 'stu';
     new Vue({
         el: "#loginDiv",
         data() {
-
             return {
-                errMsg: "12",
+                errMsg: "",
                 c_username: "",
                 c_password: "",
                 remember: false,
-                radio: "stu"
+                radio: type
             }
         },
         mounted() {
@@ -81,6 +75,8 @@
                 url: "/web/getUserServlet",
             }).then((resp) => {
                 let count = resp.data;
+                if(count == 'fail')
+                    return ;
                 this.c_username = count.username;
                 this.c_password = count.password;
                 this.remember = count.remember;
@@ -113,19 +109,11 @@
                 let password = this.c_password;
                 let remember = this.remember;
                 let radio = this.radio;
-
-                //将用户信息设置为json
-                let count = {
-                    username: "",
-                    password: "",
-                    remember: "",
-                    radio: ""
-                };
-                count.username = username;
-                count.password = password;
-                count.remember = remember;
-                count.radio = radio;
-
+                alert(radio);
+                if(username == null || password == null){
+                    this.error("请将格式规范");
+                    return ;
+                }
                 axios({
                     method: "post",
                     url: "/web/loginServlet",

@@ -1,7 +1,10 @@
 package Service;
 
 import pojo.Count;
+import pojo.StuInfo_Tea;
 import pojo.Teacher;
+
+import java.util.List;
 
 /**
  * @auther:Florence
@@ -31,6 +34,8 @@ public interface mybatis {
     boolean updateTeachInfo(int code,String name,String phone,String address);
 
 
+    //获取学生信息
+    List<StuInfo_Tea> selectStuInfo(int teaId);
     void close();
 
     void commit();

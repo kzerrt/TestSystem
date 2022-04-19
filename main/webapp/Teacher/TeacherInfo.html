@@ -93,7 +93,7 @@
                 if (teacher == 'fail') {
 
                 } else {
-                    this.teacher.code = teacher.id;
+                    this.teacher.code = teacher.code;
                     this.teacher.tname = teacher.name;
                     this.teacher.sex = teacher.sex;
                     this.teacher.age = teacher.age;
@@ -169,7 +169,7 @@
                             if (resp.data != "success") {
                                 this.error(resp.data);
                             } else {
-                                location.href = "http://localhost:8080/web/login.html";
+
                             }
                         })
                     } else {
@@ -217,9 +217,17 @@
             }
         }).then(resp => {
             if (resp.data == 'success') {
-                this.chengShow("修改成功!!");
+                this.$message({
+                    showClose: true,
+                    message: '修改成功',
+                    type: 'success'
+                });
             } else {
-                this.error("修改失败!");
+                this.$message({
+                    showClose: true,
+                    message: "修改失败!",
+                    type: 'error'
+                });
             }
         })
     }

@@ -31,8 +31,13 @@ public class GetUserCookieServlet extends HttpServlet {
             }
 
         }
+        String s;
         response.setContentType("application/json;charset=utf-8");
-        String s = JSON.toJSONString(count);
+        //判断是否存在用户
+        if(count.getUsername() == null){
+            s = "fail";
+        }else
+            s = JSON.toJSONString(count);
 
         response.getWriter().write(s);
         response.getWriter().close();
