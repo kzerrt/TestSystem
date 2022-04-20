@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+    <style>
+        .el-table .warning-row {
+            background: lightcoral;
+        }
+    </style>
+</head>
+<body>
+
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+<div id="app">
+
+    <template>
+        <el-table
+                :data="tableData"
+                height="500"
+                style="width: 100%"
+                :row-class-name="tableRowClassName">
+            <el-table-column
+                    label="序号"
+                    type="index"
+                    width="60">
+            </el-table-column>
+            <el-table-column
+                    prop="code"
+                    label="学号"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="姓名"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="sex"
+                    label="性别"
+                    width="60">
+            </el-table-column>
+            <el-table-column
+                    prop="dept"
+                    label="专业"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="course"
+                    label="课程"
+                    width="160">
+            </el-table-column>
+            <el-table-column
+                    prop="grade"
+                    label="分数"
+                    width="60">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-form :inline="true">
+                       <!-- <el-form-item>
+                            <el-button
+                                    size="small"
+                                    @click="handleEdit(scope.$index, scope.row)">修改成绩
+                            </el-button>
+                        </el-form-item>-->
+                        <el-form-item >
+                            <el-popover
+                                    placement="right"
+                                    width="20"
+                                    trigger="click">
+                                <el-input
+                                        @change="update(scope.row)"
+                                        size="small"
+                                        v-model.number="scope.row.grade"
+                                        style="width: 60px"
+                                ></el-input>
+                                <el-button slot="reference">修改成绩</el-button>
+                            </el-popover>
+
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+
+</div>
+
+<script>
+
+    new Vue({
+        el: "#app",
+        mounted(){
+            axios({
+                url:'',
+                method:'get'
+            }).then(resp => {
+
+            })
+        },
+        methods: {
+            tableRowClassName({row, rowIndex}) {
+                if (row.grade < 60) {
+                    return 'warning-row'
+                }
+                return '';
+            },
+            handleEdit(index, row) {
+
+            },
+            update(row){
+                alert(row.grade);
+            }
+        },
+        data() {
+            var stu = {
+                code: '001',
+                name: '002',
+                sex: '01',
+                dept: '003',
+                course: '220',
+                grade: '60',
+            }
+            return {
+                tableData: [{
+                    code: '001',
+                    name: '002',
+                    sex: '01',
+                    dept: '003',
+                    course: '220',
+                    grade: '58'
+                },{
+                    code: '011',
+                    name: '033',
+                    sex: '01',
+                    dept: '003',
+                    course: '224',
+                    grade: '65'
+                },{
+                    code: '005',
+                    name: '089',
+                    sex: '01',
+                    dept: '003',
+                    course: '222',
+                    grade: '78'
+                },
+                ],
+
+            }
+
+        }
+    });
+</script>
+</body>
+</html>

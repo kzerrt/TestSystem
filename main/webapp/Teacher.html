@@ -99,6 +99,12 @@
                 this.count = "4";
             }
 
+        },
+        mounted(){
+            axios({
+                method:"get",
+                url:'/web/showAllInfoByteaServlet'
+            })
         }
 
     });

@@ -72,7 +72,7 @@
             </el-table-column>
             <el-table-column
                     prop="course"
-                    label="学科"
+                    label="课程"
                     width="160">
             </el-table-column>
             <el-table-column
@@ -125,6 +125,18 @@
 
             onsubmit(){
 
+                axios({
+                    method:"post",
+                    url:'/web/selectStuInfoServlet',
+                    data:{
+                        code:this.formInline.code,
+                        name:this.formInline.name,
+                        sex:this.formInline.sex,
+                        dept:this.formInline.dept
+                    }
+                }).then(resp => {
+
+                })
             },
 
         }

@@ -33,7 +33,7 @@
         where tea_id = (select id from teach_user b where b.id = #{id});
     </select>
     <select id="selectStuInfo" resultType="pojo.StuInfo_Tea">
-        select d.s_code code, course, grade, d.sex sex, dept.name dept, d.name name,collage.name collage
+        select d.id id,d.s_code code, course, grade, d.sex sex, dept.name dept, d.name name,collage.name collage
         from student d
                  join
              (select b.stu_id code, c.c_name course, b.grade grade
