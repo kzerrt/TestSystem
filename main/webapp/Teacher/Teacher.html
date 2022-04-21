@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="css/teacher.css" rel="stylesheet">
+    <link href="../css/teacher.css" rel="stylesheet">
 
 </head>
 <body>
@@ -47,9 +47,9 @@
                     <template slot="title"><i class="el-icon-menu"></i>菜单</template>
                     <el-menu-item-group>
                         <!--<el-menu-item index="2-1" v-on:click="update()">学生信息</el-menu-item>-->
-                        <el-menu-item index="1-1" ><a target="main" href="Teacher/TeacherInfo.html" >个人信息</a></el-menu-item>
-                        <el-menu-item index="1-2" ><a target="main" href="Teacher/StuInfo.html" >学生列表</a></el-menu-item>
-                        <el-menu-item index="1-3" v-on:click="update1()">学生成绩</el-menu-item>
+                        <el-menu-item index="1-1" ><a target="main" href="TeacherInfo.html" >个人信息</a></el-menu-item>
+                        <el-menu-item index="1-2" ><a target="main" href="StuInfo.html" >学生列表</a></el-menu-item>
+                        <el-menu-item index="1-3"><a target="main" href="UpdateGrade.html" >学生成绩</a></el-menu-item>
                         <!--<el-menu-item index="1-4" v-on:click="">添加学生</el-menu-item>-->
                     </el-menu-item-group>
                 </el-submenu>
@@ -65,46 +65,32 @@
         <el-main>
             <!--<img src="../imgs/3.png" height="550" width="auto"/>-->
             <!--<a href="brand.html">aaa</a>-->
-            <iframe name="main" src=""  style="background-image:url(imgs/13.png) ;height: 590px;margin:0px" height="100%" width="99%" ></iframe>
+            <iframe name="main" src=""  style="background-image:url(../imgs/13.png) ;height: 590px;margin:0px" height="100%" width="99%" ></iframe>
         </el-main>
 
     </el-container>
 </div>
 
-<script src="js/vue.js"></script>
-<script src="element-ui/lib/index.js"></script>
-<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
 
 <script>
 
     new Vue({
         el: "#app",
+        mounted(){
+
+        },
         data() {
 
             return {
                 count: "1",
             }
 
-
         },
         methods: {
 
-            update() {
-                this.count = "1";
-            },
-            update1() {
-                this.count = "2";
-            },
-            center() {
-                this.count = "4";
-            }
-
-        },
-        mounted(){
-            axios({
-                method:"get",
-                url:'/web/showAllInfoByteaServlet'
-            })
         }
 
     });
@@ -114,7 +100,10 @@
      * 退出登录
      * */
     document.getElementById("exit").onclick = function () {
-        location.href = "http://localhost:8080/web/login.html";
+        axios({
+            method:'get',
+            url:'/web/a/closeServlet'
+        })
     }
 
 </script>

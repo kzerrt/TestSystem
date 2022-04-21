@@ -5,7 +5,6 @@ package pojo;
  * @date:2022/04/18/15:21
  */
 public class StuInfo_Tea {
-    private int id;
     private int code;
     private String sex;
     private String name;
@@ -14,13 +13,19 @@ public class StuInfo_Tea {
     private String course;
     private int grade;
 
+    @Override
+    public String toString() {
+        return "StuInfo_Tea{" +
+                "code=" + code +
+                ", sex='" + sex + '\'' +
+                ", name='" + name + '\'' +
+                ", dept='" + dept + '\'' +
+                ", collage='" + collage + '\'' +
+                ", course='" + course + '\'' +
+                ", grade=" + grade +
+                '}';
+    }
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
     public String getCourse() {
         return course;
     }

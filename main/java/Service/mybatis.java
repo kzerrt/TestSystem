@@ -1,5 +1,6 @@
 package Service;
 
+import org.apache.ibatis.annotations.Param;
 import pojo.Count;
 import pojo.StuInfo_Tea;
 import pojo.Teacher;
@@ -32,6 +33,9 @@ public interface mybatis {
     //修改教师信息
     boolean updateTeachInfo(Teacher teacher);
     boolean updateTeachInfo(int code,String name,String phone,String address);
+
+    //修改学生成绩
+    boolean updateGrade(int grade,  String course, int code,int teaId);
 
 
     //获取学生信息

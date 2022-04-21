@@ -72,10 +72,18 @@ public class mybatisImp implements mybatis {
         return mapper.updateTeachInfo(code,name,phone,address);
     }
 
+
+
     @Override
     public List<StuInfo_Tea> selectStuInfo(int teaId) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         return mapper.selectStuInfo(teaId);
+    }
+
+    @Override
+    public boolean updateGrade(int grade, String course, int code, int teaId) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.updateGrade(grade,course,code,teaId);
     }
 
     /*public List<Count> select(){
@@ -92,5 +100,9 @@ public class mybatisImp implements mybatis {
     @Override
     public void commit(){
         sqlSession.commit();
+    }
+
+    public void roll(){
+        sqlSession.rollback();
     }
 }

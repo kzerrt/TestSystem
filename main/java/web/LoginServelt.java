@@ -16,7 +16,7 @@ import java.io.IOException;
  * @auther:Florence
  * @date:2022/03/16/20:22
  */
-@WebServlet("/loginServlet")
+@WebServlet("/a/loginServlet")
 public class LoginServelt extends HttpServlet {
 
     /*@Override
@@ -90,31 +90,18 @@ public class LoginServelt extends HttpServlet {
         //获得json请求
         BufferedReader reader = req.getReader();
         String s = reader.readLine();
-        System.out.println(s);
+
         Count user = null;
         //将json对象进行转化
         JSONObject jsonObject = JSONObject.parseObject(s);
         Count_Json count = jsonObject.toJavaObject(Count_Json.class);
 
 
-        /*count.setPassword((String) result.get("password"));
-        count.setRadio((String) result.get("radio"));
-        count.setRemember((String) result.get("remember"));*/
-
-        /*String username = result.getString("username");
-        String password = result.getString("password");
-        String radio = result.getString("radio");
-        String remember = String.valueOf(result.getBoolean("remember"));*/
-
         String username = count.getUsername();
         String password = count.getPassword();
         String radio = count.getRadio();
         boolean remember = count.getRemember();
 
-
-        /*String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String remember = req.getParameter("remember");*/
 
         System.out.println("username"+username);
         System.out.println(password);
@@ -145,7 +132,6 @@ public class LoginServelt extends HttpServlet {
         if(password.equals(user.getPassword())){
             if(remember){
 
-
                 //设置Cookie
                 Cookie c_username = new Cookie("username",user.getUsername());
                 Cookie c_password = new Cookie("password", user.getPassword());
@@ -153,10 +139,10 @@ public class LoginServelt extends HttpServlet {
                 Cookie c_remember = new Cookie("remember", String.valueOf(count.getRemember()));
 
                 //设置Cookie的存储时间
-                c_username.setMaxAge(60);
-                c_password.setMaxAge(60);
-                c_radio.setMaxAge(60);
-                c_remember.setMaxAge(60);
+                c_username.setMaxAge(60*10);
+                c_password.setMaxAge(60*10);
+                c_radio.setMaxAge(60*10);
+                c_remember.setMaxAge(60*10);
 
                 //将Cookie添加到resp中
                 resp.addCookie(c_username);

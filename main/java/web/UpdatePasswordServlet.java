@@ -13,7 +13,7 @@ import javax.servlet.annotation.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/updateServlet")
+@WebServlet("/a/updateServlet")
 public class UpdatePasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,7 +30,6 @@ public class UpdatePasswordServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Count user = (Count)session.getAttribute("user");
 
-        System.out.println(user.toString());
 
         if(user == null){
             msg = "账户问题，请重试";
@@ -43,8 +42,6 @@ public class UpdatePasswordServlet extends HttpServlet {
         BufferedReader reader = request.getReader();
         String s = reader.readLine();
 
-
-        System.out.println( "json" + s);
 
         String password = JSON.parseObject(s, String.class);
 

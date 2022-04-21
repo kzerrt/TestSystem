@@ -61,7 +61,10 @@ public interface UserMapper {
     ////修改教师信息
     boolean updateTeachInfo(Teacher teacher);
     boolean updateTeachInfo(@Param("code") int code,@Param("name") String name,@Param("phone") String phone,@Param("address") String address);
-
+    //查询学生成绩信息
     List<StuInfo_Tea> selectStuInfo(int teaId);
+
+    //更改学生成绩
+    boolean updateGrade(@Param("grade") int grade,@Param("cName")String cName,@Param("code") int code,@Param("teaId") int teaId);
 
 }

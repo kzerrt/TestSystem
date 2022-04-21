@@ -91,8 +91,9 @@
         mounted(){
             var _this = this;
             axios({
-                method:"get",
-                url:"/web/showStuInfoByTeachServlet"
+                method:"post",
+                url:"/web/a/showStuInfoByTeachServlet",
+                data:'info'
             }).then(resp =>{
                 stus = resp.data;
                 _this.stuData = stus;
@@ -100,14 +101,14 @@
         },
         data(){
             var stu = {
-                id:'1',
-                    code:'1212',
-                    name:'121',
-                    sex:'1',
-                    dept:'1312',
-                    collage:'213',
-                    course:'23',
-                    grade:'123'
+                id:'',
+                    code:'',
+                    name:'',
+                    sex:'',
+                    dept:'',
+                    collage:'',
+                    course:'',
+                    grade:''
             }
             return {
 
@@ -127,7 +128,7 @@
 
                 axios({
                     method:"post",
-                    url:'/web/selectStuInfoServlet',
+                    url:'/web/a/selectStuInfoServlet',
                     data:{
                         code:this.formInline.code,
                         name:this.formInline.name,

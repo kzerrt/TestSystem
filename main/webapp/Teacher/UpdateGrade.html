@@ -27,7 +27,7 @@
             <el-table-column
                     label="序号"
                     type="index"
-                    width="60">
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="code"
@@ -62,12 +62,6 @@
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-form :inline="true">
-                       <!-- <el-form-item>
-                            <el-button
-                                    size="small"
-                                    @click="handleEdit(scope.$index, scope.row)">修改成绩
-                            </el-button>
-                        </el-form-item>-->
                         <el-form-item >
                             <el-popover
                                     placement="right"
@@ -96,14 +90,33 @@
     new Vue({
         el: "#app",
         mounted(){
+            /*初始化加载学生信息*/
             axios({
-                url:'',
-                method:'get'
+                url:'/web/a/showStuInfoByTeachServlet',
+                method:'post',
+                data:'grade'
             }).then(resp => {
-
+                var _this = this;
+                let stus    = resp.data;
+                _this.tableData = stus;
             })
         },
         methods: {
+            succ(msg) {
+                this.$message({
+                    showClose: true,
+                    message: msg,
+                    type: 'success'
+                });
+            },
+            error(msg) {
+
+                this.$message({
+                    showClose: true,
+                    message: msg,
+                    type: 'error'
+                });
+            },
             tableRowClassName({row, rowIndex}) {
                 if (row.grade < 60) {
                     return 'warning-row'
@@ -113,44 +126,37 @@
             handleEdit(index, row) {
 
             },
+            /*更新学生分数*/
             update(row){
-                alert(row.grade);
+                axios({
+                    method:'post',
+                    url:'/web/a/updateGradeServlet',
+                    data:{
+                        code:row.code,
+                        course:row.course,
+                        grade:row.grade
+                    }
+
+                }).then(resp => {
+                    if(resp.data === 'success'){
+                        this.succ('修改成功');
+                    }else{
+                        this.error('修改失败');
+                    }
+                })
             }
         },
         data() {
             var stu = {
-                code: '001',
-                name: '002',
-                sex: '01',
-                dept: '003',
-                course: '220',
-                grade: '60',
+                code: '',
+                name: '',
+                sex: '',
+                dept: '',
+                course: '',
+                grade: '',
             }
             return {
-                tableData: [{
-                    code: '001',
-                    name: '002',
-                    sex: '01',
-                    dept: '003',
-                    course: '220',
-                    grade: '58'
-                },{
-                    code: '011',
-                    name: '033',
-                    sex: '01',
-                    dept: '003',
-                    course: '224',
-                    grade: '65'
-                },{
-                    code: '005',
-                    name: '089',
-                    sex: '01',
-                    dept: '003',
-                    course: '222',
-                    grade: '78'
-                },
-                ],
-
+                tableData: [],
             }
 
         }

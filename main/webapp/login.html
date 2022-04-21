@@ -72,7 +72,7 @@
 
             axios({
                 method: "get",
-                url: "/web/getUserServlet",
+                url: "/web/a/getUserServlet",
             }).then((resp) => {
                 let count = resp.data;
                 if(count == 'fail')
@@ -88,12 +88,6 @@
 
             ///账号密码错误弹窗
             error(msg) {
-                /*this.$notify.error({
-                    title: '错误',
-                    message: msg,
-                    type:"error"
-                });*/
-
                 this.$message({
                     showClose: true,
                     message: msg,
@@ -109,14 +103,13 @@
                 let password = this.c_password;
                 let remember = this.remember;
                 let radio = this.radio;
-                alert(radio);
                 if(username == null || password == null){
                     this.error("请将格式规范");
                     return ;
                 }
                 axios({
                     method: "post",
-                    url: "/web/loginServlet",
+                    url: "/web/a/loginServlet",
                     data: {
                         username: username,
                         password: password,
@@ -129,13 +122,13 @@
                     if (msg == "successStu") {
                         location.href = "http://localhost:8080/web/main.jsp";
                     } else if (msg == "successTea") {
-                        location.href = "http://localhost:8080/web/Teacher.html";
+                        /*location.href = "http://localhost:8080/web/Teacher/Teacher.html";*/
+                        location.href = 'http://localhost:8080/web/Teacher/Teacher.html'
                     } else {
                         this.error(msg);
                     }
                 })
             }
-
 
         }
     })

@@ -86,7 +86,7 @@
         el: "#app",
         mounted() {
             axios({
-                url: '/web/showInfoServlet',
+                url: '/web/a/showInfoServlet',
                 method: "get",
             }).then(resp => {
                 const teacher = resp.data;
@@ -161,7 +161,7 @@
                         /*alert('submit!');*/
                         axios({
                             method: "post",
-                            url: "/web/updateServlet",
+                            url: "/web/a/updateServlet",
                             data: this.ruleForm.pass
 
                         }).then(resp => {
@@ -169,7 +169,11 @@
                             if (resp.data != "success") {
                                 this.error(resp.data);
                             } else {
-
+                                //将用户会话信息移除
+                                axios({
+                                    method:'get',
+                                    url:'/web/a/closeServlet'
+                                })
                             }
                         })
                     } else {
@@ -207,7 +211,7 @@
     function updateInfo() {
         /*this.dialogFormVisible = false;*/
         axios({
-            url: '/web/updateInfoServlet',
+            url: '/web/a/updateInfoServlet',
             method: 'post',
             data: {
                 code: this.teacher.code,

@@ -27,13 +27,14 @@
         where t_code = #{code};
     </update>
 
+
     <select id="selectByTeaId" resultType="pojo.Teacher">
         select *
         from teacher a
         where tea_id = (select id from teach_user b where b.id = #{id});
     </select>
     <select id="selectStuInfo" resultType="pojo.StuInfo_Tea">
-        select d.id id,d.s_code code, course, grade, d.sex sex, dept.name dept, d.name name,collage.name collage
+        select d.s_code code, course, grade, d.sex sex, dept.name dept, d.name name, collage.name collage
         from student d
                  join
              (select b.stu_id code, c.c_name course, b.grade grade
@@ -41,9 +42,21 @@
                        join stu_grade b on b.teach_cou_id = a.id
                        join course c on c.id = a.cou_id) f on d.id = f.code
                  join dept on dept.id = d.id
-                join collage on dept.col_id = collage.id;
+                 join collage on dept.col_id = collage.id;
 
     </select>
+
+    <update id="updateGrade">
+        update stu_grade
+        set grade = #{grade}
+        where teach_cou_id =
+              (select id
+               from teach_cou
+               where cou_id =
+                     (select id from course where c_name = #{cName})
+                 and tea_id = #{teaId})
+          and stu_id = (select id from student where s_code = #{code});
+    </update>
 
 
 </mapper>

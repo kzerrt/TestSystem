@@ -1,8 +1,12 @@
-package web; /**
+package web.Teach; /**
  * @auther:Florence
  * @date:2022/04/19/14:12
  */
-
+/****
+ *
+ *******************条件查询学生信息
+ *
+ * */
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import pojo.StuInfo_Tea;
@@ -16,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/selectStuInfoServlet")
+@WebServlet("/a/selectStuInfoServlet")
 public class SelectStuInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

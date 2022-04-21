@@ -1,4 +1,4 @@
-package web; /**
+package web.Teach; /**
  * @auther:Florence
  * @date:2022/04/17/13:36
  */
@@ -13,7 +13,7 @@ import javax.servlet.annotation.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/updateInfoServlet")
+@WebServlet("/a/updateInfoServlet")
 public class UpdateInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
