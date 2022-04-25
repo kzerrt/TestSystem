@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TeacherInfo</title>
+</head>
+<body>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+
+<div id="app" align="center" style="margin-top: 10%">
+
+    <el-table :data="studentData" style="width: 900px;border-radius: 0px" border >
+        <el-table-column prop="code" label="学号" width="225px" height="10px" align="center">
+        </el-table-column>
+        <el-table-column prop="sName" label="姓名" width="225px" height="10px" align="center">
+        </el-table-column>
+        <el-table-column prop="age" label="年龄" width="225px" height="10px" align="center">
+        </el-table-column>
+        <el-table-column prop="sex" label="性别" width="224px" height="10px" align="center">
+        </el-table-column>
+    </el-table>
+    <el-table :data="studentData" style="width: 900px;border-radius: 0px" border >
+        <el-table-column prop="cal" label="班级" width="200px" height="10px" align="center">
+        </el-table-column>
+        <el-table-column prop="dept" label="系别" height="10px" width="350px" align="center">
+        </el-table-column>
+        <el-table-column prop="collage" label="学院" height="10px" width="349px" align="center">
+        </el-table-column>
+    </el-table>
+    <el-table :data="studentData" style="width: 900px;border-radius: 0px" border >
+        <el-table-column prop="phone" label="电话" width="300px" height="10px" align="center">
+        </el-table-column>
+        <el-table-column prop="address" label="地址" height="10px" width="599px" align="center">
+        </el-table-column>
+    </el-table>
+    <div style="margin-top: 40px">
+        <el-button type="primary" style="margin-right: 40px" v-on:click="dialogFormVisible = true">修改信息</el-button>
+        <el-button type="primary" v-on:click="dialogPasswordVisible = true">修改密码</el-button>
+    </div>
+
+
+    <!--修改教师信息-->
+    <el-dialog title="修改信息" :visible.sync="dialogFormVisible">
+        <el-form>
+            <el-form-item label="电话" :label-width="formLabelWidth">
+                <el-input v-model="student.phone" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="地址" :label-width="formLabelWidth">
+                <el-input v-model="student.address" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false" onclick="updateInfo()">确 定</el-button>
+
+    </el-dialog>
+
+
+    <!--用户修改密码-->
+    <el-dialog title="修改信息" :visible.sync="dialogPasswordVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="密码" prop="pass">
+                <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass">
+                <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
+</div>
+
+<script>
+    var student = {
+        id: '',
+        code: '',
+        sName: "",
+        age: "",
+        sex: "",
+        phone: "",
+        address: "",
+        cla:'',
+        dept:'',
+        collage:''
+    };
+
+    new Vue({
+        el: "#app",
+        mounted() {
+            axios({
+                url: '/web/a/showInfoServlet',
+                method: "get"
+            }).then(resp => {
+                const student = resp.data;
+
+                if (student === 'fail') {
+                    return;
+                } else {
+                    this.student.code = student.code;
+                    this.student.sName = student.name;
+                    this.student.sex = student.sex;
+                    this.student.age = student.age;
+                    this.student.phone = student.phone;
+                    this.student.address = student.address;
+                    this.student.cla = student.cla;
+                    this.student.dept = student.dept;
+                    this.student.collage = student.collage;
+                }
+            })
+
+        },
+
+        data() {
+
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+
+
+
+            return {
+                studentData:Array(1).fill(student),
+                student: student,
+                dialogFormVisible: false,
+                formLabelWidth: '120px',
+                dialogPasswordVisible: false,
+
+                ruleForm: {
+                    pass: '',
+                    checkPass: ''
+                },
+                rules: {
+                    pass: [
+                        {validator: validatePass, trigger: 'blur'}
+                    ],
+                    checkPass: [
+                        {validator: validatePass2, trigger: 'blur'}
+                    ]
+                }
+            }
+
+
+        },
+        methods: {
+            /**
+             * 当用户将密码填写正确后进行判断
+             * */
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        /*alert('submit!');*/
+                        axios({
+                            method: "post",
+                            url: "/web/a/updateServlet",
+                            data: this.ruleForm.pass
+
+                        }).then(resp => {
+                            if (resp.data !== 'success') {
+                                this.error(resp.data);
+                            } else {
+                                //将用户会话信息移除
+                                axios({
+                                    method:'get',
+                                    url:'/web/a/closeServlet'
+                                })
+                            }
+                        })
+                    } else {
+                        /*console.log('error submit!!');*/
+                        this.error('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            /**
+             * 用户重置修改密码框中的信息
+             * */
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        },
+
+        chengShow(msg) {
+            this.$message({
+                showClose: true,
+                message: msg,
+                type: 'success'
+            });
+        },
+        error(msg) {
+            this.$message({
+                showClose: true,
+                message: msg,
+                type: 'error'
+            });
+        }
+    });
+
+    //更新教师信息
+    function updateInfo() {
+        /*this.dialogFormVisible = false;*/
+        axios({
+            url: '/web/a/updateInfoServlet',
+            method: 'post',
+            data: {
+                id: this.student.id,
+                name: this.student.sName,
+                phone: this.student.phone,
+                address: this.student.address
+            }
+        }).then(resp => {
+            if (resp.data === 'success') {
+                this.$message({
+                    showClose: true,
+                    message: '修改成功',
+                    type: 'success'
+                });
+            } else {
+                this.$message({
+                    showClose: true,
+                    message: "修改失败!",
+                    type: 'error'
+                });
+            }
+        })
+    }
+</script>
+<script>
+
+
+</script>
+</body>
+</html>

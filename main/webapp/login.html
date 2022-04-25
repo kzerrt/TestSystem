@@ -119,10 +119,9 @@
                 }).then((resp) => {
                     let msg = resp.data;
                     /*alert(msg);*/
-                    if (msg == "successStu") {
-                        location.href = "http://localhost:8080/web/main.jsp";
-                    } else if (msg == "successTea") {
-                        /*location.href = "http://localhost:8080/web/Teacher/Teacher.html";*/
+                    if (msg === "successStu") {
+                        location.href = "http://localhost:8080/web/Student/Student.html";
+                    } else if (msg === "successTea") {
                         location.href = 'http://localhost:8080/web/Teacher/Teacher.html'
                     } else {
                         this.error(msg);

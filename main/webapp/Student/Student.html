@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../css/student.css" rel="stylesheet">
+
+</head>
+<body>
+<div id="app">
+
+    <!--****************head栏************************-->
+    <!--***********************************************-->
+    <el-container>
+
+        <el-header style="font-size: 50px; height: auto ;">学生管理系统
+
+            <el-dropdown >
+                    <span class="el-dropdown-link">
+                        <!--<下拉菜单i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                        <template>
+                            <div class="demo-type">
+                                <div>
+                                    <el-avatar icon="el-icon-user-solid"></el-avatar>
+                                </div>
+                            </div>
+                        </template>
+                    </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item divided id="exit">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-header>
+
+    </el-container>
+
+    <!--****************contain内容************************-->
+    <!--**************************************************-->
+    <el-container>
+        <!--****************侧边栏************************-->
+
+        <el-aside width="200px" style="background-color:rgb(238, 241, 246)">
+            <el-menu>
+
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-menu"></i>菜单</template>
+                    <el-menu-item-group>
+                        <el-menu-item index="1-1" ><a target="main" href="StudentInfo.html" >个人信息</a></el-menu-item>
+                        <el-menu-item index="1-2" ><a target="main" href="StuGrade.html" >个人成绩</a></el-menu-item>
+                    </el-menu-item-group>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+
+
+        <!--****************main栏************************-->
+        <!--****************main栏************************-->
+        <!--****************main栏************************-->
+
+        <!--图片页面-->
+        <el-main>
+            <iframe name="main" src=""  style="background-image:url(../imgs/15.png) ;height: 590px;margin:0px" height="100%" width="99%" ></iframe>
+        </el-main>
+
+    </el-container>
+</div>
+
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+<script>
+
+    new Vue({
+        el: "#app",
+        mounted(){
+
+        },
+        data() {
+
+            return {
+
+            }
+
+        },
+        methods: {
+
+        }
+
+    });
+
+
+    /**
+     * 退出登录
+     * */
+    document.getElementById("exit").onclick = function () {
+        location.href = '/web/login.html';
+    }
+
+</script>
+
+
+</body>
+</html>

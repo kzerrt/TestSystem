@@ -1,0 +1,64 @@
+.el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+}
+
+.el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    /*line-height: 160px;*/
+}
+
+body > .el-container {
+    margin-bottom: 10px;
+}
+
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+}
+/****************end******************/
+/**************main结构********************/
+
+.el-header {
+
+    /*background-color: #67C23A;*/
+    /*color: #333;
+    line-height: 80px;*/
+    text-align: center;
+    /*background: url("../imgs/13.png") no-repeat 0px 0px;*/
+}
+
+.el-aside {
+    color: #333;
+}
+.picture{
+    background: url("../imgs/13.png") no-repeat 0px 0px;
+}
+a:link{
+    text-decoration: none;
+    color: black;
+}
+a:active{
+    color: black;
+}
+a:hover{
+    color: black;
+}
+a:visited{
+    color: black;
+}
+
+body {
+    background: url("../imgs/4.png") ;
+    background-size: 100%;
+    text-align: center;
+}
+

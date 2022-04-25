@@ -5,12 +5,46 @@
 <mapper namespace="mapper.UserMapper">
 
     <resultMap id="Teacher" type="pojo.Teacher">
-        <result column="tea_id" property="teacherCountId"></result>
+        <result column="tea_id" property="teacherCountId"/>
         <!--<result column="birthday" property="age"/>-->
-        <result column="t_code" property="code"></result>
+        <result column="t_code" property="code"/>
+    </resultMap>
+    <resultMap id="Student" type="pojo.StudentInfo">
+        <result column="s_code" property="code"/>
+        <result column="class" property="cla"/>
     </resultMap>
 
 
+    <select id="selectStuInfoByCountId" resultMap="Student">
+        select a.id                   id,
+               s_code,
+               name,
+               sex,
+               year(now()) - birthday age,
+               class,
+               phone,
+               address,
+               b.deptn                dept,
+               b.colln                collage
+        from (select * from student where user_id = #{id}) a
+                 join (select dept.id id, dept.name deptn, collage.name colln
+                       from dept
+                                join collage on dept.col_id = collage.id) as b
+                      on a.dept_id = b.id
+    </select>
+
+
+    <select id="showGradeByStuId" resultType="pojo.StuGrade">
+        select grade, cr.c_name course, te.name teacherName
+        from (select grade, cou_id, tea_id
+              from stu_grade
+                       join teach_cou tc on stu_grade.teach_cou_id = tc.id
+              where stu_id = #{id}) a
+                 join course cr on cr.id = cou_id
+                 join teacher te on te.id = a.tea_id;
+    </select>
+
+    <!--0000000000000000000000000000000000000000000000000-->
     <update id="updateTeachInfo">
         update teacher
         <set>
@@ -46,6 +80,7 @@
 
     </select>
 
+
     <update id="updateGrade">
         update stu_grade
         set grade = #{grade}
@@ -57,6 +92,34 @@
                  and tea_id = #{teaId})
           and stu_id = (select id from student where s_code = #{code});
     </update>
+
+
+    <select id="selectInfoByCondition" resultType="pojo.StuInfo_Tea">
+        select d.s_code code, course, grade, d.sex sex, dept.name dept, d.name name, collage.name collage
+        from student d
+        join
+        (select b.stu_id code, c.c_name course, b.grade grade
+        from (select id, cou_id from teach_cou where id = #{teaId}) a
+        join stu_grade b on b.teach_cou_id = a.id
+        join course c on c.id = a.cou_id) f on d.id = f.code
+        join dept on dept.id = d.id
+        join collage on dept.col_id = collage.id
+        <where>
+            <if test="s.name != null||s.name != ''">
+                d.name = #{s.name}
+            </if>
+            <if test="s.sex != null">
+                and sex = #{s.sex}
+            </if>
+            <if test="s.dept != null||s.dept!=''">
+                and dept.name = #{s.dept}
+            </if>
+            <if test="s.code!=null||s.code!=''">
+                and d.s_code = #{s.code}
+            </if>
+        </where>
+        ;
+    </select>
 
 
 </mapper>

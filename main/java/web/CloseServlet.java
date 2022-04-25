@@ -21,7 +21,6 @@ public class CloseServlet extends HttpServlet {
         if(session.getAttribute("user") != null) {
             //将用户移除
             session.removeAttribute("user");
-            request.getRequestDispatcher("/web/login.html").forward(request,response);
         }else
             return ;
     }

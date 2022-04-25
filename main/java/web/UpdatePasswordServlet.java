@@ -24,6 +24,7 @@ public class UpdatePasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String msg;
         mybatisImp mybatisImp = new mybatisImp();
+        boolean flag;
 
         response.setContentType("application/json;charset=utf-8");
         //得到用户的账号
@@ -42,21 +43,23 @@ public class UpdatePasswordServlet extends HttpServlet {
         BufferedReader reader = request.getReader();
         String s = reader.readLine();
 
-
         String password = JSON.parseObject(s, String.class);
 
-        //通过sql语句将密码修改
-        boolean flag = mybatisImp.updatePassword(password,user.getUsername());
+        if("tea".equals(user.getPeopleType())) {
+            //通过sql语句将密码修改
+            flag = mybatisImp.updatePassword(password, user.getUsername());
+        }else{
+            flag = mybatisImp.updatePasByStu(password, user.getUsername());
+        }
         //返回修改结果
         if(flag){
             msg = "success";
-            //将现存账户从Session中删除
-            session.removeAttribute("user");
             mybatisImp.commit();
         }else {
             msg = "fail";
 
         }
+        System.out.println(msg);
         response.getWriter().write(msg);
         response.getWriter().close();
         mybatisImp.close();

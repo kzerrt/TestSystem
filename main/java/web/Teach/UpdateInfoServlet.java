@@ -5,6 +5,8 @@ package web.Teach; /**
 
 import Service.Imp.mybatisImp;
 import com.alibaba.fastjson.JSON;
+import pojo.Count;
+import pojo.StudentInfo;
 import pojo.Teacher;
 
 import javax.servlet.*;
@@ -24,32 +26,37 @@ public class UpdateInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=utf-8");
-
+        Count user = (Count) request.getSession().getAttribute("user");
         mybatisImp mybatisImp = new mybatisImp();
+        Teacher teacher = null;
+        StudentInfo studentInfo = null;
+        boolean flag = false;
+        String msg;
+
+
         //获取用户修改信息
         BufferedReader reader = request.getReader();
         String s = reader.readLine();
+        //判断用户类型
+        if("stu".equals(user.getPeopleType())){
+            studentInfo = JSON.parseObject(s,StudentInfo.class);
+            flag = mybatisImp.updateStuInfo(studentInfo);
+        }else {
+            teacher = JSON.parseObject(s, Teacher.class);
+            //使用sql将信息修改
+            flag = mybatisImp.updateTeachInfo(teacher);
+        }
 
-        System.out.println(s);
 
-        Teacher teacher = JSON.parseObject(s, Teacher.class);
-
-        System.out.println(teacher.toString());
-
-        //使用sql将信息修改
-        boolean flag = mybatisImp.updateTeachInfo(teacher);
-        System.out.println("flag" + flag);
-        mybatisImp.commit();
-        mybatisImp.close();
         //返回修改后的结果
-        String msg;
-        if(flag){
 
+        if(flag){
+            mybatisImp.commit();
             msg = "success";
         }else{
             msg = "fail";
         }
-        System.out.println(msg);
+        mybatisImp.close();
         response.getWriter().write(msg);
         response.getWriter().close();
     }

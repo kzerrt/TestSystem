@@ -5,7 +5,7 @@ package pojo;
  * @date:2022/04/18/15:21
  */
 public class StuInfo_Tea {
-    private int code;
+    private Integer code;
     private String sex;
     private String name;
     private String dept;
@@ -74,11 +74,11 @@ public class StuInfo_Tea {
         this.grade = grade;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 }

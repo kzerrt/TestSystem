@@ -3,9 +3,7 @@ package Service.Imp;
 import Service.mybatis;
 import mapper.UserMapper;
 import org.apache.ibatis.session.SqlSession;
-import pojo.Count;
-import pojo.StuInfo_Tea;
-import pojo.Teacher;
+import pojo.*;
 
 import java.util.List;
 
@@ -34,6 +32,30 @@ public class mybatisImp implements mybatis {
         return mapper.add(user);
     }
 
+    @Override
+    public StudentInfo selectStuInfoByCountId(int id) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.selectStuInfoByCountId(id);
+    }
+    @Override
+    public boolean updatePasByStu(String password , String username) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        boolean b = mapper.updatePasByStu(password,username);
+        return b;
+    }
+
+    @Override
+    public boolean updateStuInfo(StudentInfo s) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.updateStuInfo(s);
+    }
+    @Override
+    public List<StuGrade> showGradeByStuId(int id) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.showGradeByStuId(id);
+    }
+
+
     /**
      *
      * *************教师*************
@@ -52,6 +74,9 @@ public class mybatisImp implements mybatis {
         boolean b = mapper.updatePassword(password,username);
         return b;
     }
+
+
+
     //通过账号id查找教师信息
     @Override
     public Teacher selectTeachInfoByCountId(int id){
@@ -86,11 +111,12 @@ public class mybatisImp implements mybatis {
         return mapper.updateGrade(grade,course,code,teaId);
     }
 
-    /*public List<Count> select(){
-            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-            List<Count> select = mapper.select();
-            return select;
-        }*/
+    @Override
+    public List<StuInfo_Tea> selectInfoByCondition(StuInfo_Tea s,int id) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.selectInfoByCondition(s,id);
+    }
+
     @Override
     public void close()
     {

@@ -15,8 +15,6 @@ public class StudentInfo {
     private String address;
     private String dept;
     private String collage;
-    private int grade;
-    private String teachName;
 
     public int getId() {
         return id;
@@ -98,19 +96,4 @@ public class StudentInfo {
         this.collage = collage;
     }
 
-    public int getGrade() {
-        return grade;
-    }
-
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
-
-    public String getTeachName() {
-        return teachName;
-    }
-
-    public void setTeachName(String teachName) {
-        this.teachName = teachName;
-    }
 }

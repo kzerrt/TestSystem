@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grade</title>
+</head>
+<body>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+<div id="app" align="center" style="margin-top: 10%">
+
+    <el-table :data="gradeInfo" style="width: 900px;border-radius: 0px" border >
+        <el-table-column prop="course" label="科目" width="300px" height="10px" align="center">
+        </el-table-column>
+        <el-table-column prop="teacherName" label="任课教师" width="300px" height="10px" align="center">
+        </el-table-column>
+        <el-table-column prop="grade" label="成绩" width="299px" height="10px" align="center">
+        </el-table-column>
+
+    </el-table>
+</div>
+
+<script>
+
+    var grade = {
+        course:'',
+        tName:'',
+        grade:''
+    }
+    new Vue({
+        el:'#app',
+        data(){
+            return {
+                gradeInfo:[]
+            }
+        },
+        mounted(){
+            axios({
+                url:'/web/a/showGradeServlet',
+                method:'get'
+            }).then(resp => {
+                if(resp.data === 'fail'){
+                    return ;
+                }
+                let grades = resp.data;
+                this.gradeInfo = grades;
+            })
+        },
+        method(){
+
+        }
+    });
+</script>
+</body>
+</html>

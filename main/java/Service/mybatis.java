@@ -1,9 +1,7 @@
 package Service;
 
 import org.apache.ibatis.annotations.Param;
-import pojo.Count;
-import pojo.StuInfo_Tea;
-import pojo.Teacher;
+import pojo.*;
 
 import java.util.List;
 
@@ -18,9 +16,16 @@ public interface mybatis {
 
     //添加学生账号
     boolean add(Count user);
+    //查找学生信息
+    StudentInfo selectStuInfoByCountId(int id);
 
+    boolean updatePasByStu(String password , String username);
+
+    boolean updateStuInfo(StudentInfo s);
     //修改账号密码
     boolean updatePassword(String password,String username);
+    //根据学生id获得学生相关成绩信息
+    List<StuGrade> showGradeByStuId(int id);
 
     /**
      * ********教师*********
@@ -37,6 +42,7 @@ public interface mybatis {
     //修改学生成绩
     boolean updateGrade(int grade,  String course, int code,int teaId);
 
+    List<StuInfo_Tea> selectInfoByCondition(StuInfo_Tea s,int id);
 
     //获取学生信息
     List<StuInfo_Tea> selectStuInfo(int teaId);

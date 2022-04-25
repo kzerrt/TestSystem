@@ -7,9 +7,12 @@ package web.Teach; /**
  *******************条件查询学生信息
  *
  * */
+
+import Service.Imp.mybatisImp;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import pojo.Count;
 import pojo.StuInfo_Tea;
+import pojo.Teacher;
 import pojo.TeacherHelp;
 
 import javax.servlet.*;
@@ -29,45 +32,29 @@ public class SelectStuInfoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<StuInfo_Tea> students = new ArrayList<>();
+        mybatisImp mybatisImp = new mybatisImp();
+        String result = "fail";
         //获取用户搜索条件
         request.setCharacterEncoding("utf-8");
         BufferedReader reader = request.getReader();
         String s = reader.readLine();
-        JSONObject jsonObject = JSON.parseObject(s);
-        int code = jsonObject.getObject("code", int.class);
-        String name = jsonObject.getObject("name", String.class);
-        String dept = jsonObject.getObject("dept", String.class);
-        String sex = jsonObject.getObject("sex", String.class);
-        String[] si = {name,dept,sex};
 
-        int a = 0;
+        StuInfo_Tea stuInfo = JSON.parseObject(s, StuInfo_Tea.class);
 
-        for (int i = 0; i < 3; i++) {
-            if(!"".equals(si[i])){
-                a++;
-            }
-        }
-        //通过条件筛选学生
-        for (StuInfo_Tea stu :
-                TeacherHelp.getStudents()) {
-
-            if(stu.getCode() == code){
-
-            }
-            if(stu.getSex().equals(sex)){
-
-            }
-            if(stu.getName().equals(name)){
-
-            }
-            if(stu.getDept().equals(dept)){
-
-            }
-        }
-
+        HttpSession session = request.getSession();
+        Count user = (Count) session.getAttribute("user");
+        //得到教师id
+        Teacher teacher = mybatisImp.selectTeachInfoByCountId(user.getId());
+        List<StuInfo_Tea> stus = mybatisImp.selectInfoByCondition(stuInfo, teacher.getId());
         //将筛选后的学生返回
-
+        if(stus == null){
+            result = "fail";
+        }else{
+            result = JSON.toJSONString(stus);
+        }
+        response.getWriter().write(result);
+        mybatisImp.close();
     }
+
 
 }

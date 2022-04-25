@@ -1,9 +1,7 @@
 package mapper;
 
 import org.apache.ibatis.annotations.*;
-import pojo.Count;
-import pojo.StuInfo_Tea;
-import pojo.Teacher;
+import pojo.*;
 
 import java.util.List;
 
@@ -24,10 +22,20 @@ public interface UserMapper {
      * */
     @Insert("insert into tb_user values(null,#{username},#{password});")
     boolean add(Count user);
+    /****
+     * **通过账号获取到学生详细信息
+     * */
+    StudentInfo selectStuInfoByCountId(int id);
+    /***
+     * ****根据学生的id获得学生成绩相关内容
+     * */
+    List<StuGrade> showGradeByStuId(int id);
 
-    /*@Select("select * from tb_user")
-    List<Count> select();*/
+    @Update("update tb_user set password = #{password} where username = #{username};")
+    boolean updatePasByStu(@Param("password")String password,@Param("username")String username);
 
+    @Update("update student set phone = #{phone},address = #{address} where id = #{id};")
+    boolean updateStuInfo(StudentInfo studentInfo);
 
 
 
@@ -63,6 +71,9 @@ public interface UserMapper {
     boolean updateTeachInfo(@Param("code") int code,@Param("name") String name,@Param("phone") String phone,@Param("address") String address);
     //查询学生成绩信息
     List<StuInfo_Tea> selectStuInfo(int teaId);
+
+    //条件查询学生信息
+    List<StuInfo_Tea> selectInfoByCondition(@Param("s") StuInfo_Tea s,@Param("teaId")int id);
 
     //更改学生成绩
     boolean updateGrade(@Param("grade") int grade,@Param("cName")String cName,@Param("code") int code,@Param("teaId") int teaId);

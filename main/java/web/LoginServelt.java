@@ -131,7 +131,6 @@ public class LoginServelt extends HttpServlet {
 
         if(password.equals(user.getPassword())){
             if(remember){
-
                 //设置Cookie
                 Cookie c_username = new Cookie("username",user.getUsername());
                 Cookie c_password = new Cookie("password", user.getPassword());
