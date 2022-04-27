@@ -30,7 +30,7 @@
                  join (select dept.id id, dept.name deptn, collage.name colln
                        from dept
                                 join collage on dept.col_id = collage.id) as b
-                      on a.dept_id = b.id
+                      on a.dept_id = b.id;
     </select>
 
 

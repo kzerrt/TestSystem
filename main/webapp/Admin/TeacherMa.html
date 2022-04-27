@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher</title>
+</head>
+<body>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+<div id="app" align="center">
+    <el-container>
+        <el-main>
+            <template>
+                <el-table
+                        :data="teacheData"
+                        style="width: 1250px"
+                        max-height="480"
+                        align="center">
+                    <el-table-column
+                            type="index"
+                            label="序号"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="code"
+                            label="工号"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="姓名"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sex"
+                            label="性别"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="age"
+                            label="年龄"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="phone"
+                            label="电话"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="address"
+                            label="地址">
+                    </el-table-column>
+
+                    <el-table-column
+                            fixed="right"
+                            width="180">
+                        <template slot="header">
+                            <el-button type="primary" icon="el-icon-plus" @click="convert">添加教师</el-button>
+                        </template>
+                        <template slot-scope="scope" >
+                            <el-button @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit"></el-button>
+                            <el-button type="danger" @click.native.prevent="deleteRow(scope.$index, scope.row,teacheData)" icon="el-icon-delete"></el-button>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+            </template>
+        </el-main>
+    </el-container>
+
+
+
+    <!------------------------------修改学生信息-------------------------------------------------->
+    <el-dialog title="学生信息" :visible.sync="dialogFormVisible" style="width: 1600px" align="center" >
+        <el-form :model="teaMsg" inline style="width: 700px">
+            <el-form-item label="教师工号" :label-width="formLabelWidth">
+                <el-input v-model="teaMsg.code" autocomplete="off" ></el-input>
+            </el-form-item>
+            <el-form-item label="教师姓名" :label-width="formLabelWidth">
+                <el-input v-model="teaMsg.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="教师性别" :label-width="formLabelWidth" style="margin-right: 130px" >
+                <el-select v-model="teaMsg.sex" style="width: 100px;">
+                    <el-option label="男" value="男"></el-option>
+                    <el-option label="女" value="女"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="年龄" :label-width="formLabelWidth" style="margin-right: 130px">
+                <el-input type="number" v-model="teaMsg.age" autocomplete="off" style="width: 80px;"></el-input>
+            </el-form-item>
+            <el-form-item label="电话" :label-width="formLabelWidth">
+                <el-input v-model="teaMsg.phone" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="地址" :label-width="formLabelWidth">
+                <el-input v-model="teaMsg.address" autocomplete="off"></el-input>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateTea" v-if="tip">确 定</el-button>
+            <el-button type="primary" @click="addTea"  v-if="!tip">添加</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+<script>
+    var teacher = {
+        code: 'fa',
+        name: 'af',
+        sex: 'sdf',
+        age: '13',
+        phone: 'ga',
+        address: 'ag'
+    }
+    var teaMsg = {
+        code: '',
+        name: '',
+        sex: '',
+        age: '',
+        phone: '',
+        address: ''
+    }
+    var flag = false;
+    new Vue({
+        el: '#app',
+        mounted(){
+            this.update1()
+        },
+        data() {
+            return {
+                teacheData: Array(4).fill(teacher),
+                dialogFormVisible:flag,
+                formLabelWidth:'120px',
+                teaMsg:teaMsg,
+                tip:true
+            }
+        },
+        methods: {
+            handleEdit(index, row) {
+                var _this = this;
+                _this.tip = true;
+                _this.dialogFormVisible = true;
+
+                this.teaMsg.code = row.code;
+                this.teaMsg.name = row.name;
+                this.teaMsg.sex = row.sex;
+                this.teaMsg.age = row.age;
+                this.teaMsg.phone = row.phone;
+                this.teaMsg.address = row.address;
+
+            },
+            deleteRow(index, row,rows) {
+                axios({
+                    /*url:'/web/a/deleteServlet?name=teacher',*/
+                    method:'post',
+                    data: row.code
+
+                }).then(resp => {
+                    if(resp.data === 'fail'){
+                        this.fail('删除失败');
+                    }else{
+                        rows.splice(index, 1);
+                        this.succ('删除成功');
+                    }
+
+                })
+
+            },
+            updateTea(){
+                var _this = this;
+                _this.dialogFormVisible = false;
+                axios({
+                    /*url:'/web/a/updateServlet?name=teacher',*/
+                    method:'post',
+                    data:{
+                        code:this.teaMsg.code,
+                        name: this.teaMsg.name,
+                        sex: this.teaMsg.sex,
+                        age: this.teaMsg.age,
+                        phone: this.teaMsg.phone,
+                        address: this.teaMsg.address,
+                    }
+                }).then(resp =>{
+                    if(resp.data === 'fail'){
+                        this.fail('修改失败');
+                    }else{
+                        this.succ('修改成功');
+                        this.update1()
+                    }
+                })
+            },
+            addTea(){
+                axios({
+                    /*url:'/web/a/addServlet?name=teacher',*/
+                    method:'post',
+                    data:{
+                        code:this.teaMsg.code,
+                        name: this.teaMsg.name,
+                        sex: this.teaMsg.sex,
+                        age: this.teaMsg.age,
+                        phone: this.teaMsg.phone,
+                        address: this.teaMsg.address
+                    }
+                }).then(resp => {
+                    if(resp.data === 'fail'){
+                        this.fail('添加失败')
+                    }else{
+                        this.succ('添加成功');
+                        this.update1();
+                    }
+                })
+            },
+            convert(){
+                var _this = this;
+                _this.tip = false;
+                _this.dialogFormVisible = true;
+                this.teaMsg.code = '';
+                this.teaMsg.name = '';
+                this.teaMsg.sex = '';
+                this.teaMsg.age = '';
+                this.teaMsg.phone = '';
+                this.teaMsg.address = '';
+            },
+            succ(msg){
+                this.$message({
+                    message: msg,
+                    type: 'success'
+                });
+            },
+            fail(msg){
+                this.$message.error(msg);
+            },
+
+            update1(){
+                axios({
+                    /*url:'/web/a/showInfoServlet?name=teacher',*/
+                    method:'get'
+                }).then(resp => {
+                    let msg = resp.data;
+                    if(msg === 'fail')
+                        return;
+                    this.teacheData = msg;
+                })
+            }
+        },
+
+    })
+</script>
+</body>
+</html>

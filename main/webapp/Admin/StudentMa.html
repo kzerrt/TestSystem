@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student</title>
+</head>
+<body>
+<script src="../js/axios-0.18.0.js"></script>
+<script src="../js/vue.js"></script>
+<script src="../element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
+<div id="app" align="center">
+    <el-container>
+        <el-main>
+            <template>
+                <el-table
+                        :data="studentData"
+                        style="width: 1250px"
+                        max-height="480"
+                        align="center">
+                    <el-table-column
+                            prop="code"
+                            label="学号"
+                            width="60">
+                    </el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="姓名"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sex"
+                            label="性别"
+                            width="60">
+                    </el-table-column>
+                    <el-table-column
+                            prop="age"
+                            label="年龄"
+                            width="60">
+                    </el-table-column>
+                    <el-table-column
+                            prop="dept"
+                            label="部门"
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="collage"
+                            label="学院"
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="cla"
+                            label="班级"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="phone"
+                            label="电话"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="address"
+                            label="地址">
+                    </el-table-column>
+
+                    <el-table-column
+                            fixed="right"
+                            width="180">
+                        <template slot="header">
+                            <el-button type="primary" icon="el-icon-plus" @click="convert">添加学生</el-button>
+                        </template>
+                        <template slot-scope="scope" >
+                            <el-button @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit"></el-button>
+                            <el-button type="danger" @click.native.prevent="deleteRow(scope.$index, scope.row,studentData)" icon="el-icon-delete"></el-button>
+                        </template>
+                    </el-table-column>
+
+                </el-table>
+            </template>
+        </el-main>
+    </el-container>
+
+
+
+    <!------------------------------修改学生信息-------------------------------------------------->
+    <el-dialog title="学生信息" :visible.sync="dialogFormVisible" style="width: 1600px" align="center" >
+        <el-form :model="stuMsg" inline style="width: 700px">
+            <el-form-item label="学生学号" :label-width="formLabelWidth">
+                <el-input v-model="stuMsg.code" autocomplete="off" ></el-input>
+            </el-form-item>
+            <el-form-item label="学生姓名" :label-width="formLabelWidth">
+                <el-input v-model="stuMsg.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="学生性别" :label-width="formLabelWidth" >
+                <el-select v-model="stuMsg.sex" style="width: 100px;">
+                    <el-option label="男" value="男"></el-option>
+                    <el-option label="女" value="女"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="年龄" :label-width="formLabelWidth" >
+                <el-input type="number" v-model="stuMsg.age" autocomplete="off" style="width: 80px;"></el-input>
+            </el-form-item>
+            <el-form-item label="班级" :label-width="formLabelWidth">
+                <el-input v-model="stuMsg.cla" autocomplete="off" style="width: 110px;"></el-input>
+            </el-form-item>
+            <el-form-item label="学院" :label-width="formLabelWidth">
+                <el-input v-model="stuMsg.dept" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="系别" :label-width="formLabelWidth">
+                <el-input v-model="stuMsg.collage" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="电话" :label-width="formLabelWidth">
+                <el-input v-model="stuMsg.phone" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="地址" :label-width="formLabelWidth">
+                <el-input v-model="stuMsg.address" autocomplete="off"></el-input>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateStu" v-if="tip">确 定</el-button>
+            <el-button type="primary" @click="addStu"  v-if="!tip">添加</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+<script>
+    var student = {
+        code: 'fa',
+        name: 'af',
+        sex: 'sdf',
+        age: '13',
+        dept: 'ag',
+        collage: 'af',
+        phone: 'ga',
+        address: 'ag',
+        cla: 'ga'
+    }
+    var stuMsg = {
+        code: '',
+        name: '',
+        sex: '',
+        age: '',
+        dept: '',
+        collage: '',
+        phone: '',
+        address: '',
+        cla: ''
+    }
+    var flag = false;
+    new Vue({
+        el: '#app',
+        mounted(){
+            this.update1()
+        },
+        data() {
+            return {
+                studentData: [],
+                dialogFormVisible:flag,
+                formLabelWidth:'120px',
+                stuMsg:stuMsg,
+                tip:true
+            }
+        },
+        methods: {
+            handleEdit(index, row) {
+                var _this = this;
+                _this.tip = true;
+                _this.dialogFormVisible = true;
+
+                this.stuMsg.code = row.code;
+                this.stuMsg.name = row.name;
+                this.stuMsg.sex = row.sex;
+                this.stuMsg.age = row.age;
+                this.stuMsg.phone = row.phone;
+                this.stuMsg.dept = row.dept;
+                this.stuMsg.address = row.address;
+                this.stuMsg.collage = row.collage;
+                this.stuMsg.cla = row.cla;
+
+            },
+            deleteRow(index, row,rows) {
+                axios({
+                    /*url:'/web/a/deleteServlet?name=student',*/
+                    method:'post',
+                    data: row.code
+
+                }).then(resp => {
+                    if(resp.data === 'fail'){
+                        this.fail('删除失败');
+                    }else{
+                        rows.splice(index, 1);
+                        this.succ('删除成功');
+                    }
+
+                })
+
+            },
+            updateStu(){
+                var _this = this;
+                _this.dialogFormVisible = false;
+                axios({
+                    /*url:'/web/a/updateServlet?name=student',*/
+                    method:'post',
+                    data:{
+                        code:this.stuMsg.code,
+                        name: this.stuMsg.name,
+                        sex: this.stuMsg.sex,
+                        age: this.stuMsg.age,
+                        phone: this.stuMsg.phone,
+                        dept: this.stuMsg.dept,
+                        address: this.stuMsg.address,
+                        cla: this.stuMsg.cla
+                    }
+                }).then(resp =>{
+                    if(resp.data === 'fail'){
+                        this.fail('修改失败');
+                    }else{
+                        this.succ('修改成功');
+                        this.update1()
+                    }
+                })
+            },
+            addStu(){
+                axios({
+                    /*url:'/web/a/addServlet?name=student',*/
+                    method:'post',
+                    data:{
+                        code:this.stuMsg.code,
+                        name: this.stuMsg.name,
+                        sex: this.stuMsg.sex,
+                        age: this.stuMsg.age,
+                        phone: this.stuMsg.phone,
+                        dept: this.stuMsg.dept,
+                        address: this.stuMsg.address,
+                        cla: this.stuMsg.cla,
+                        collage:this.stuMsg.collage
+                    }
+                }).then(resp => {
+                    if(resp.data === 'fail'){
+                        this.fail('添加失败')
+                    }else{
+                        this.update1();
+                        this.succ('添加成功')
+                    }
+                })
+            },
+            convert(){
+                var _this = this;
+                _this.tip = false;
+                _this.dialogFormVisible = true;
+                this.stuMsg.code = '';
+                this.stuMsg.name = '';
+                this.stuMsg.sex = '';
+                this.stuMsg.age = '';
+                this.stuMsg.phone = '';
+                this.stuMsg.dept = '';
+                this.stuMsg.address = '';
+                this.stuMsg.collage = '';
+                this.stuMsg.cla = '';
+            },
+            succ(msg){
+                this.$message({
+                    message: msg,
+                    type: 'success'
+                });
+            },
+            fail(msg){
+                this.$message.error(msg);
+            },
+
+            update1(){
+                axios({
+                    /*url:'/web/a/showInfoServlet?name=student',*/
+                    method:'get'
+                }).then(resp => {
+                    let msg = resp.data;
+                    if(msg === 'fail')
+                        return;
+                    this.studentData = msg;
+                })
+            }
+        },
+
+    })
+</script>
+</body>
+</html>

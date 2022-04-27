@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.AdminMapper">
+
+    <resultMap id="Student" type="pojo.StudentInfo">
+        <result column="s_code" property="code"/>
+        <result column="class" property="cla"/>
+
+    </resultMap>
+    <resultMap id="Teacher" type="pojo.Teacher">
+        <result column="tea_id" property="teacherCountId"/>
+        <result column="t_code" property="code"/>
+    </resultMap>
+
+
+    <select id="showStuInfo" resultMap="Student">
+        select a.id                   id,
+               s_code,
+               name,
+               sex,
+               year(now()) - birthday age,
+               class,
+               phone,
+               address,
+               b.deptn                dept,
+               b.colln                collage
+        from (select * from student) a
+                 join (select dept.id id, dept.name deptn, collage.name colln
+                       from dept
+                                join collage on dept.col_id = collage.id) as b
+                      on a.dept_id = b.id;
+    </select>
+
+
+    <update id="updateStu">
+        update student
+        <set>
+            <if test="name!=null||name!=''">
+                name=#{name},
+            </if>
+            <if test="sex!=null||sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="age!=null||age!=''">
+                birthday = year(now())-#{age},
+            </if>
+            <if test="phone!=null||phone!=''">
+                phone = #{phone},
+            </if>
+            <if test="cla!=null||cla!=''">
+                class = #{cla},
+            </if>
+            <if test="address!=null||address!=''">
+                address = #{address}
+            </if>
+        </set>
+        where s_code = #{code};
+    </update>
+
+    <insert id="addStudent">
+        insert into student(s_code, name, sex, birthday, class, phone, address, dept_id) value (
+                                                                                                #{code}, #{name},
+                                                                                                #{sex},
+                                                                                                year(now()) - #{age},
+                                                                                                #{cla}, #{phone},
+                                                                                                #{address},
+                                                                                                (select id from dept where name = #{dept})
+            );
+    </insert>
+
+
+    <select id="showTeaInfo" resultMap="Teacher">
+        select id,
+               t_code,
+               name,
+               sex,
+               year(now()) - birthday age,
+               phone,
+               address,
+               tea_id
+        from teacher;
+    </select>
+
+    <update id="updateTea">
+        update teacher
+        <set>
+
+            <if test="name!=null||name!=''">
+                name=#{name},
+            </if>
+            <if test="sex!=null||sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="age!=null||age!=''">
+                birthday = year(now())-#{age},
+            </if>
+            <if test="phone!=null||phone!=''">
+                phone = #{phone},
+            </if>
+            <if test="address!=null||address!=''">
+                address = #{address}
+            </if>
+        </set>
+        where t_code = #{code};
+    </update>
+
+    <insert id="addTeacher">
+        insert into teacher(t_code, name, sex, birthday, phone, address)
+        value(#{code},#{name},#{sex},year(now())-#{age},#{phone},#{address})
+    </insert>
+</mapper>
