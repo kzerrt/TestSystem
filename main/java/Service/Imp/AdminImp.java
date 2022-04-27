@@ -3,6 +3,7 @@ package Service.Imp;
 import Service.Admin;
 import mapper.AdminMapper;
 import org.apache.ibatis.session.SqlSession;
+import pojo.StuInfo_Tea;
 import pojo.StudentInfo;
 import pojo.Teacher;
 
@@ -66,6 +67,18 @@ public class AdminImp implements Admin {
     public boolean addTeacher(Teacher teacher) {
         AdminMapper mapper = sqlSession.getMapper(AdminMapper.class);
         return mapper.addTeacher(teacher);
+    }
+
+    @Override
+    public List<StuInfo_Tea> showStuGrade() {
+        AdminMapper mapper = sqlSession.getMapper(AdminMapper.class);
+        return mapper.showStuGrade();
+    }
+
+    @Override
+    public boolean updateGrade(int grade, String cName, int code, String teaName) {
+        AdminMapper mapper = sqlSession.getMapper(AdminMapper.class);
+        return mapper.updateGrade(grade, cName, code, teaName);
     }
 
 

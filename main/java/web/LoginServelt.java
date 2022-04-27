@@ -85,7 +85,7 @@ public class LoginServelt extends HttpServlet {
         resp.setContentType("application/json;charset=utf-8");
 
         mybatisImp my = new mybatisImp();
-        String msg = "";
+        String msg = "fail";
        //使用req.getParameter无法获得json对象.需要使用输入流来接受json对象
         //获得json请求
         BufferedReader reader = req.getReader();
@@ -102,20 +102,29 @@ public class LoginServelt extends HttpServlet {
         String radio = count.getRadio();
         boolean remember = count.getRemember();
 
+        //判断是否为管理员用户
+        if(username.contains("#")){
 
-        System.out.println("username"+username);
-        System.out.println(password);
-        System.out.println(remember);
+            user = new Count(username,password);
+            user.setPeopleType("admin");
+            HttpSession session = req.getSession();
+            session.setAttribute("user",user);
+
+            my.close();
+            resp.getWriter().write("admin");
+            return ;
+        }
+
 
         //判断用户类型
         if("stu".equals(radio)){
             //从数据库中获取学生账号对象
             user = my.selectByStuUserId(username);
-        }else{
+        }else {
             user = my.selectByTeaUserId(username);
         }
 
-        //System.out.println(user.toString());
+
         //判断是否存在用户
         if(user == null)
         {
@@ -159,7 +168,6 @@ public class LoginServelt extends HttpServlet {
                 msg = "successStu";
             else
                 msg = "successTea";
-            //req.getRequestDispatcher("/main.jsp").forward(req,resp);
         }else{
             msg = "用户密码错误";
         }

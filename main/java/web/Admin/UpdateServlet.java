@@ -14,7 +14,7 @@ import javax.servlet.annotation.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/a/updateServlet")
+@WebServlet("/a/updateServletAtAdmin")
 public class UpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

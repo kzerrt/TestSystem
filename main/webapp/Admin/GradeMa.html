@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update</title>
+    <title>Grade</title>
     <style>
         .el-table .warning-row {
             background: lightcoral;
@@ -15,6 +15,7 @@
 <script src="../js/vue.js"></script>
 <script src="../element-ui/lib/index.js"></script>
 <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+
 
 <div id="app">
 
@@ -55,6 +56,11 @@
                     width="160">
             </el-table-column>
             <el-table-column
+                    prop="teacher"
+                    label="任课教师"
+                    width="160">
+            </el-table-column>
+            <el-table-column
                     prop="grade"
                     label="分数"
                     width="60">
@@ -85,16 +91,24 @@
 
 </div>
 
-<script>
 
+<script>
+    var stu = {
+        code: '',
+        name: '',
+        sex: '',
+        dept: '',
+        course: '',
+        teacher: '',
+        grade: ''
+    }
     new Vue({
         el: "#app",
         mounted() {
             /*初始化加载学生信息*/
             axios({
-                url: '/web/a/showStuInfoByTeachServlet',
-                method: 'post',
-                data: 'grade'
+                url: '/web/a/gradeServletAtAdmin',
+                method: 'get'
             }).then(resp => {
                 var _this = this;
                 let stus = resp.data;
@@ -117,6 +131,8 @@
                     type: 'error'
                 });
             },
+
+
             tableRowClassName({row, rowIndex}) {
                 if (row.grade < 60) {
                     return 'warning-row'
@@ -130,11 +146,12 @@
             update(row) {
                 axios({
                     method: 'post',
-                    url: '/web/a/updateGradeServlet',
+                    url: '/web/a/updateGradeServletAtAdmin',
                     data: {
                         code: row.code,
                         course: row.course,
-                        grade: row.grade
+                        grade: row.grade,
+                        teacher: row.teacher
                     }
 
                 }).then(resp => {
@@ -147,14 +164,6 @@
             }
         },
         data() {
-            var stu = {
-                code: '',
-                name: '',
-                sex: '',
-                dept: '',
-                course: '',
-                grade: '',
-            }
             return {
                 tableData: [],
             }

@@ -11,6 +11,7 @@ public class StuInfo_Tea {
     private String dept;
     private String collage;
     private String course;
+    private String teacher;
     private int grade;
 
     @Override
@@ -26,6 +27,13 @@ public class StuInfo_Tea {
                 '}';
     }
 
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
     public String getCourse() {
         return course;
     }

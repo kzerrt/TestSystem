@@ -83,6 +83,7 @@
         from teacher;
     </select>
 
+
     <update id="updateTea">
         update teacher
         <set>
@@ -106,8 +107,32 @@
         where t_code = #{code};
     </update>
 
+
     <insert id="addTeacher">
         insert into teacher(t_code, name, sex, birthday, phone, address)
-        value(#{code},#{name},#{sex},year(now())-#{age},#{phone},#{address})
+            value (#{code}, #{name}, #{sex}, year(now()) - #{age}, #{phone}, #{address})
     </insert>
+
+    <select id="showStuGrade" resultType="pojo.StuInfo_Tea">
+        select st.name name, st.sex sex, st.s_code code, t.name teacher, a.grade grade, co.c_name course,d.name dept
+        from (select stu_id, stu_grade.grade, tc.tea_id, tc.cou_id
+              from stu_grade
+                       join teach_cou tc on stu_grade.teach_cou_id = tc.id) a
+                 join teacher t on a.tea_id = t.id
+                 join course co on co.id = a.cou_id
+                 join student st on st.id = a.stu_id
+                 join dept d on st.dept_id = d.id;
+    </select>
+
+    <update id="updateGrade">
+        update stu_grade
+        set grade = #{grade}
+        where teach_cou_id =
+              (select id
+               from teach_cou
+               where cou_id =
+                     (select id from course where c_name = #{cName})
+                 and tea_id = (select id from teacher te where te.name = #{teaName}))
+          and stu_id = (select id from student where s_code = #{code});
+    </update>
 </mapper>

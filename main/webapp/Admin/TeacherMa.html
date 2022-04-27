@@ -155,7 +155,7 @@
             },
             deleteRow(index, row,rows) {
                 axios({
-                    /*url:'/web/a/deleteServlet?name=teacher',*/
+                    url:'/web/a/deleteServletAtAdmin?name=teacher',
                     method:'post',
                     data: row.code
 
@@ -174,7 +174,7 @@
                 var _this = this;
                 _this.dialogFormVisible = false;
                 axios({
-                    /*url:'/web/a/updateServlet?name=teacher',*/
+                    url:'/web/a/updateServletAtAdmin?name=teacher',
                     method:'post',
                     data:{
                         code:this.teaMsg.code,
@@ -195,7 +195,7 @@
             },
             addTea(){
                 axios({
-                    /*url:'/web/a/addServlet?name=teacher',*/
+                    url:'/web/a/addServletAtAdmin?name=teacher',
                     method:'post',
                     data:{
                         code:this.teaMsg.code,
@@ -237,7 +237,7 @@
 
             update1(){
                 axios({
-                    /*url:'/web/a/showInfoServlet?name=teacher',*/
+                    url:'/web/a/showInfoServletAtAdmin?name=teacher',
                     method:'get'
                 }).then(resp => {
                     let msg = resp.data;

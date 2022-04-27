@@ -1,4 +1,5 @@
-package web.Admin; /**
+package web.Admin;
+/**
  * @auther:Florence
  * @date:2022/04/26/13:39
  */
@@ -14,7 +15,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/a/showInfoServlet")
+@WebServlet("/a/showInfoServletAtAdmin")
 public class ShowInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

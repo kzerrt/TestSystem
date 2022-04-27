@@ -1,5 +1,7 @@
 package Service;
 
+import org.apache.ibatis.annotations.Param;
+import pojo.StuInfo_Tea;
 import pojo.StudentInfo;
 import pojo.Teacher;
 
@@ -31,5 +33,10 @@ public interface Admin {
 
     //添加教师信息
     boolean addTeacher(Teacher teacher);
+
+    //显示学生成绩信息
+    List<StuInfo_Tea> showStuGrade();
+
+    boolean updateGrade(int grade,String cName, int code, String teaName);
 
 }

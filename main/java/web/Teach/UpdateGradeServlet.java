@@ -30,7 +30,6 @@ public class UpdateGradeServlet extends HttpServlet {
         BufferedReader reader = request.getReader();
         String s = reader.readLine();
 
-        System.out.println(s);
 
         //修改成绩
         mybatisImp mybatisImp = new mybatisImp();
@@ -40,16 +39,13 @@ public class UpdateGradeServlet extends HttpServlet {
             Integer code = jsonObject.getObject("code", int.class);
             String course = jsonObject.getObject("course", String.class);
             Integer grade = jsonObject.getObject("grade", int.class);
-            System.out.println(code);
-            System.out.println(course);
-            System.out.println(grade);
             if (TeacherHelp.getTeacher() != null) {
                 flag = mybatisImp.updateGrade(grade, course, code, TeacherHelp.getTeacher().getId());
             }
             else{
                 HttpSession session = request.getSession();
                 Count user = (Count) session.getAttribute("user");
-                if(user.getPeopleType().equals("tea")) {
+                if("tea".equals(user.getPeopleType())) {
                     Teacher teacher = mybatisImp.selectTeachInfoByCountId(user.getId());
                     flag = mybatisImp.updateGrade(grade, course, code, teacher.getId());
                     TeacherHelp.setTeacher(teacher);

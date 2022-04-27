@@ -75,7 +75,7 @@
                 url: "/web/a/getUserServlet",
             }).then((resp) => {
                 let count = resp.data;
-                if(count == 'fail')
+                if(count === 'fail')
                     return ;
                 this.c_username = count.username;
                 this.c_password = count.password;
@@ -122,8 +122,10 @@
                     if (msg === "successStu") {
                         location.href = "http://localhost:8080/web/Student/Student.html";
                     } else if (msg === "successTea") {
-                        location.href = 'http://localhost:8080/web/Teacher/Teacher.html'
-                    } else {
+                        location.href = 'http://localhost:8080/web/Teacher/Teacher.html';
+                    } else if(msg === 'admin'){
+                        location.href = 'http://localhost:8080/web/Admin/Admin.html';
+                    }else {
                         this.error(msg);
                     }
                 })

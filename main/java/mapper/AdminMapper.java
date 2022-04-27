@@ -1,7 +1,9 @@
 package mapper;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import pojo.StuInfo_Tea;
 import pojo.StudentInfo;
 import pojo.Teacher;
 
@@ -38,4 +40,11 @@ public interface AdminMapper {
 
     //添加教师信息
     boolean addTeacher(Teacher teacher);
+
+    //显示学生成绩信息
+    List<StuInfo_Tea> showStuGrade();
+
+    //更改学生成绩
+    boolean updateGrade(@Param("grade") int grade, @Param("cName")String cName, @Param("code") int code, @Param("teaName") String teaName);
+
 }

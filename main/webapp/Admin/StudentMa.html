@@ -183,7 +183,7 @@
             },
             deleteRow(index, row,rows) {
                 axios({
-                    /*url:'/web/a/deleteServlet?name=student',*/
+                    url:'/web/a/deleteServletAtAdmin?name=student',
                     method:'post',
                     data: row.code
 
@@ -202,7 +202,7 @@
                 var _this = this;
                 _this.dialogFormVisible = false;
                 axios({
-                    /*url:'/web/a/updateServlet?name=student',*/
+                    url:'/web/a/updateServletAtAdmin?name=student',
                     method:'post',
                     data:{
                         code:this.stuMsg.code,
@@ -225,7 +225,7 @@
             },
             addStu(){
                 axios({
-                    /*url:'/web/a/addServlet?name=student',*/
+                    url:'/web/a/addServletAtAdmin?name=student',
                     method:'post',
                     data:{
                         code:this.stuMsg.code,
@@ -242,8 +242,8 @@
                     if(resp.data === 'fail'){
                         this.fail('添加失败')
                     }else{
+                        this.succ('添加成功');
                         this.update1();
-                        this.succ('添加成功')
                     }
                 })
             },
@@ -273,7 +273,7 @@
 
             update1(){
                 axios({
-                    /*url:'/web/a/showInfoServlet?name=student',*/
+                    url:'/web/a/showInfoServletAtAdmin?name=student',
                     method:'get'
                 }).then(resp => {
                     let msg = resp.data;
