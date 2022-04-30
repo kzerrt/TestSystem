@@ -28,7 +28,7 @@ public class LoginFilter implements Filter {
         //拦截器会将页面有关的所有文件拦截
         String[] urls =
                 {"/register.jsp","/login.html","/element-ui","/css","/js","/imgs","/Teacher"
-                ,"/a/","/Student"};
+                ,"/a/","/Student","/Admin","/Conversation.html"};
         String url = req.getRequestURL().toString();
         for(String u:urls){
             if(url.contains(u)){

@@ -132,7 +132,7 @@
         },
         data() {
             return {
-                teacheData: Array(4).fill(teacher),
+                teacheData: [],
                 dialogFormVisible:flag,
                 formLabelWidth:'120px',
                 teaMsg:teaMsg,
@@ -172,7 +172,7 @@
             },
             updateTea(){
                 var _this = this;
-                _this.dialogFormVisible = false;
+
                 axios({
                     url:'/web/a/updateServletAtAdmin?name=teacher',
                     method:'post',
@@ -188,6 +188,7 @@
                     if(resp.data === 'fail'){
                         this.fail('修改失败');
                     }else{
+                        _this.dialogFormVisible = false;
                         this.succ('修改成功');
                         this.update1()
                     }

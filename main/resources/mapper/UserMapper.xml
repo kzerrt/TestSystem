@@ -15,6 +15,7 @@
     </resultMap>
 
 
+
     <select id="selectStuInfoByCountId" resultMap="Student">
         select a.id                   id,
                s_code,
@@ -120,6 +121,30 @@
         </where>
         ;
     </select>
+    <select id="selectConversationByStuId" resultType="pojo.ConverP">
+        select distinct t.name name,t.tea_id as id
+        from teach_cou
+                 join teacher t on t.id = teach_cou.tea_id
+                 join (
+            select teach_cou_id
+            from stu_grade
+            where stu_id =
+                  (select id from student where user_id = #{id})) as sgtci on teach_cou.id = teach_cou_id
+    </select>
+    <select id="selectConversationByTeaId" resultType="pojo.ConverP">
+        select distinct name,s.id as id
+        from stu_grade
+                 join student s on s.id = stu_grade.stu_id
+        where teach_cou_id in
+              (select id
+               from teach_cou
+               where tea_id =
+                     (select id from teacher where tea_id = #{id}))
+    </select>
+    <select id="showTalk" resultType="pojo.ConverP">
+        select message as word , type as name from conversation where tea_id = #{teaId} and stu_id = #{stuId};
+    </select>
+
 
 
 </mapper>

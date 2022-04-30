@@ -11,6 +11,10 @@ import java.util.List;
  */
 public interface UserMapper {
 
+
+    //根据账号id获取学生id
+    @Select("select id from student where user_id = #{countId};")
+    int selectStuIdByCountId(int countId);
     /**
      * 通过用户名获取到用户账户信息
      * */
@@ -46,6 +50,9 @@ public interface UserMapper {
      *
      * */
 
+    //根据账号id获取学生id
+    @Select("select id from teacher where tea_id = #{countId};")
+    int selectTeaIdByCountId(int countId);
     /**
      * 通过教师账号id查询教师信息
      * */
@@ -77,5 +84,18 @@ public interface UserMapper {
 
     //更改学生成绩
     boolean updateGrade(@Param("grade") int grade,@Param("cName")String cName,@Param("code") int code,@Param("teaId") int teaId);
+
+
+    //根据学生账号id获取到相关教师信息
+    List<ConverP> selectConversationByStuId(int id);
+    //根据教师账号id获取到相关学生信息
+    List<ConverP> selectConversationByTeaId(int id);
+
+    //根据教师或者学生姓名获取到某人的聊天记录
+    List<ConverP> showTalk(@Param("teaId") int teaId,@Param("stuId") int stuId);
+
+    //发送消息
+    @Insert("insert into conversation value(null,#{stuId},#{teaId},#{msg},'N',#{sendPerson});")
+    boolean sendMsg(@Param("stuId") int stuId,@Param("teaId") int teaId,@Param("msg") String msg,@Param("sendPerson") String sendPerson);
 
 }

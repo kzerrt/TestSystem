@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import pojo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther:Florence
@@ -13,6 +14,8 @@ public interface mybatis {
     //void getMapper(String name);
     //查找学生账号
     Count selectByStuUserId(String name);
+
+    int selectStuIdByCountId(int countId);
 
     //添加学生账号
     boolean add(Count user);
@@ -27,10 +30,23 @@ public interface mybatis {
     //根据学生id获得学生相关成绩信息
     List<StuGrade> showGradeByStuId(int id);
 
+
+                /****/
+    //根据学生账号id获取到相关教师信息
+    List<ConverP>selectConversationByStuId(int id);
+    //根据教师账号id获取到相关学生信息
+    List<ConverP> selectConversationByTeaId(int id);
+
+    //根据教师或者学生姓名获取到某人的聊天记录
+    List<ConverP> showTalk( int teaId, int stuId);
+    //  发送信息
+    boolean sendMsg( int stuId,int teaId, String msg,String sendPerson);
     /**
      * ********教师*********
      *
      * */
+
+    int selectTeaIdByCountId(int countId);
     //查找教师账号
     Count selectByTeaUserId(String name);
     //通过账号id查找教师信息

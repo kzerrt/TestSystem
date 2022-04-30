@@ -26,6 +26,13 @@ public class mybatisImp implements mybatis {
         Count user = mapper.selectByUsername(name);
         return user;
     }
+
+    @Override
+    public int selectStuIdByCountId(int countId) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.selectStuIdByCountId(countId);
+    }
+
     @Override
     public boolean add(Count user) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
@@ -55,12 +62,43 @@ public class mybatisImp implements mybatis {
         return mapper.showGradeByStuId(id);
     }
 
+    @Override
+    public List<ConverP>  selectConversationByStuId(int id) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.selectConversationByStuId(id);
+    }
+
+    @Override
+    public List<ConverP> selectConversationByTeaId(int id) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.selectConversationByTeaId(id);
+    }
+
+    @Override
+    public List<ConverP> showTalk(int teaId, int stuId) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.showTalk(teaId, stuId);
+    }
+
+    @Override
+    public boolean sendMsg(int stuId, int teaId, String msg, String sendPerson) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.sendMsg(stuId,teaId,msg,sendPerson);
+    }
+
+
+
 
     /**
      *
      * *************教师*************
      * */
 
+    @Override
+    public int selectTeaIdByCountId(int countId) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.selectTeaIdByCountId(countId);
+    }
     @Override
     public Count selectByTeaUserId(String name) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
