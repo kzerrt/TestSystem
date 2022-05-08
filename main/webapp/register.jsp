@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <title>欢迎注册</title>
     <link href="css/register.css" rel="stylesheet">
-    <script src="lib/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery-1.11.3.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#username").bind("blur", function () {

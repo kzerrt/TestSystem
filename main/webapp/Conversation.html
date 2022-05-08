@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Conversation</title>
+    <title>Title</title>
+    <link href="css/talk.css" rel="stylesheet">
 </head>
 <body>
+
 <!--导入axios文件-->
 <script src="js/axios-0.18.0.js"></script>
 <!--导入vue文件-->
@@ -12,44 +14,147 @@
 <script src="element-ui/lib/index.js"></script>
 <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
 
-<div id="app" align="center" style="margin-top: 5%">
+<div id="app">
+    <el-container style="height: 520px; border: 1px solid #eee">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-table :data="people"
+                      style="width: 200px"
+                      height="500">
 
-    <template>
-        <el-table :data="people"
-                style="width: 900px">
-            <el-table-column
-                    prop="p"
-                    width="100">
-            </el-table-column>
-            <el-table-column
-                    prop="pi"
-                    width="750">
-            </el-table-column>
-            <el-table-column
-                    prop="msg"
-                    width="50">
-            </el-table-column>
-        </el-table>
-    </template>
+                <el-table-column prop="id"
+                                 width="60">
+                    <template slot-scope="scope">
+                        <el-button @click.native.prevent="showPeople(scope.$index, scope.row)"
+                                   circle="circle"
+                                   size="small">
+                            <el-avatar
+                                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                                    size="small"></el-avatar>
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        width="100"
+                        prop="name"
+                        align="left">
+                </el-table-column>
+            </el-table>
+        </el-aside>
+
+        <el-container>
+            <img v-if="!flag" src="imgs/13.jpg" style="width: 1200px">
+            <div v-if="flag">
+                <div class="talk_con2">
+                    <span style="margin-left: 420px; font-size: 30px">{{peoName}}</span>
+                    <!-- 显示区域 -->
+                    <div class="talk_show" id="words">
+                        <!-- 根据vue对象中的数组，遍历出对应的标签。 -->
+                        <div v-for="i in arr" :class="i.name=== 'stu'?'bTalk':'aTalk'">
+
+                            <el-avatar icon="el-icon-user-solid" v-if="i.name !== 'stu'"></el-avatar>
+                            <span>{{ i.word }}</span>
+                            <el-avatar icon="el-icon-user-solid" v-if="i.name === 'stu'"></el-avatar>
+                        </div>
+                    </div>
+
+                    <!-- 发送内容区域 -->
+                    <div class="talk_input" >
+                        <!-- 请输入内容 -->
+                        <!--<input type="text" class="talk_word" id="talkwords" v-model='msg'>-->
+                        <el-input
+                                style="width: 480px"
+                                type="textarea"
+                                autosize
+                                placeholder="请输入内容"
+                                v-model="msg">
+                        </el-input>
+                        <!-- 按钮 -->
+                        <input type="button" value="发送" class="talk_sub" id="talksub" @click="add_data()">
+                    </div>
+                </div>
+            </div>
+        </el-container>
+    </el-container>
 </div>
 
+
 <script>
-
-
+    /*记录某个聊天窗口的id*/
+    var peoCode;
     new Vue({
-        el:'#app',
-        data(){
+        el: '#app',
+        mounted() {
+            axios({
+                url: '/web/a/conversationServlet',
+                method: 'get'
+            }).then(resp => {
+                if (resp.data === 'fail') {
+                    return;
+                } else {
+                    let _this = this
+                    _this.people = resp.data
+                }
+            })
+        },
+        data() {
             return {
-                people:[{p:1,pi:2}]
+                people: [],
+                msg: '',
+                arr: [],
+                peoName: '',
+                flag: false,
             }
         },
-        mounted(){
 
-        },
-        methods:{
+        methods: {
+            error(msg) {
+                this.$message({
+                    showClose: true,
+                    message: msg,
+                    type: 'error'
+                });
 
+            },
+            showPeople(index, row) {
+                let _this = this;
+                _this.flag = true;
+                _this.peoName = row.name;
+                peoCode = row.id;
+                //将信息发送到后端
+                axios({
+                    url: '/web/a/conTalkServlet',
+                    method: 'post',
+                    data: row.id
+                }).then(resp => {
+                    if (resp.data === 'fail') {
+                        return;
+                    }
+                    _this.arr = resp.data;
+                })
+
+            },
+            add_data() {
+                let _this = this;
+                _this.arr.push({name: 'stu', word: _this.msg});
+                axios({
+                    url: '/web/a/sendMsgServlet',
+                    method: 'post',
+                    data: {
+                        word: _this.msg,
+                        id: peoCode
+                    }
+                }).then(resp => {
+                    if (resp.data === 'fail') {
+                        this.error('发送失败')
+                        return;
+                    }
+                    _this.msg = '';
+                })
+
+
+            }
         }
-    });
+    })
 </script>
 </body>
 </html>
